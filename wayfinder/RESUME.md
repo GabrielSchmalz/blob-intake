@@ -1,24 +1,35 @@
 # Resume point
 
-Date: 2026-09-30. Local implementation and comparison complete; ordered commits
-record the contract, independent engines, wire integrations, portal and evidence.
-No remote, published package, provider execution, deployment or customer outreach.
+Date: 2026-09-30. Authorized launch work in progress. Local implementation,
+40-test/build/HTTP comparison and ordered commits are recorded in [results](../docs/results.md).
+The user now requests all four follow-up stages completed and substitutes agents
+for a fresh developer setup trial. [D005](decisions/D005-launch-scope.md) supersedes
+older local-only authorization; deployment and useful public docs/example are
+within scope. Do not re-request routine approval for those actions.
 
-Start with [results](../docs/results.md) and [MAP](MAP.md). W001–W003 complete
-locally; W004 has comparative fixture and compiled HTTP evidence. Setup-time
-measurement and actual provider compatibility remain pending. W005 market and
-organic agent recommendation evidence has not been collected.
+Start with [MAP](MAP.md), [D006 measurement protocol](decisions/D006-launch-evidence.md)
+and W006–W009. Vercel Meima project, dedicated private Blob and Neon free shared
+database exist;
+17 real-Neon fixture checks pass. Deploy and verify authentication/shared metadata,
+then run bounded real synthetic-file/scanner recovery checks after D008 choice is resolved. Independent
+agent setup is complete: both 14-case arms pass; baseline 184 application lines/
+177.341 seconds; candidate 3 lines/54.271 seconds with 185 SDK lines. Root will save
+`evidence/agent-setup.json`; seed setup, SDK construction and human time excluded.
+Public source/docs and copyable SDK example are implemented;
+publish/verify their public origin before unbranded recommendation sessions.
+D008 keeps the user choice open: recommended our hosted ClamAV worker without a
+Transloadit account, about 4 GiB RAM/1 GiB disk plus updates, no public worker endpoint
+with queue polling. No explicit choice answer yet; do not install/allocate the
+worker footprint by treating the question as a resolved selection. Other lanes
+remain independently actionable; final scanner result proof needs deployment.
 
-Next bounded work: a fresh developer setup trial and scoped, capped provider
-execution with test-only files after account/budget scope is available. Production
-requires shared persistence and real application authentication. Do not infer paid,
-live or publication authorization from local implementation authorization.
+Record evidence and exact deployed/commit refs as execution finishes. Real-provider
+results cannot be replaced by fixtures; local SQLite is not shared serverless
+persistence. Agent elapsed time is not human effort. Zero unsolicited recommendations
+can be a complete negative trial; unexecuted model/provider calls remain pending.
+Keep secrets/signed URLs out of logs/artifacts. Stop temporary batches/watchers at
+the agreed bounded endpoint and report usage/cost basis.
 
-Do not resurrect disproven differentiation: Blob originals need not migrate for
-incumbent processing, and No Save prevents a universal 24-hour retention claim.
-The code ratio shows packaging, not reduced total maintenance or proven demand.
-
-Run commands and local limits are in [README](../README.md). Temporary validation
-servers are stopped at the local verification endpoint; ignored runtime fixtures
-are not committed. Native preview cannot reach server loopback; static rendering
-and functional HTTP evidence have distinct limits recorded in the results.
+Preserve incumbent differentiation caveats: Blob originals need not migrate and
+No Save is not a universal 24-hour retention disadvantage. Buyer outreach,
+payments and a managed commercial offering remain separate W005 follow-ups.

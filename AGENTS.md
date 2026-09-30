@@ -5,12 +5,14 @@ Read [CONTEXT.md](CONTEXT.md) and [wayfinder/MAP.md](wayfinder/MAP.md) before wo
 Canonical decisions live in `wayfinder/decisions`; the map links their summaries.
 Update the relevant decision and dependent work items when scope changes.
 
-Current authorization includes local implementation, comparative validation and
-ordered scoped commits, requested after repository setup. It does not include
-paid provider usage, credentials, customer outreach, remote publication, package
-publication, deployment, billing or live processing. Ordinary local inspection
-and planning updates need no additional approval. Do not treat a ready work item
-as authorization to execute beyond the user's requested scope.
+Current authorization includes all four launch stages: bounded real-provider trial,
+shared production persistence and authentication on the available paid Vercel team,
+agent-measured integration comparison, public useful documentation/example, and
+unprompted GPT/Claude discovery evaluation. Ordered scoped commits remain authorized.
+See wayfinder/decisions/D005-launch-scope.md for the latest canonical scope.
+No customer outreach, customer billing or recurring subscription purchase is implied.
+Check resource/account identity and estimate bounded usage before paid execution.
+Scanner replacement with an isolated host service is a pending explicit decision.
 
 Preserve unrelated edits. Run `git rev-parse --show-toplevel` before Git mutations;
 never stage product files in the umbrella repository. Commit/push when requested.
