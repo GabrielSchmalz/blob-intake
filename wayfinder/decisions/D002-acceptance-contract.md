@@ -1,6 +1,6 @@
 # D002: File acceptance and recovery contract
 
-Status: resolved for planning; implementation pending. Date: 2026-09-30.
+Status: implemented and verified locally; provider/production validation pending. Date: 2026-09-30.
 
 `approved` means the configured type/size checks and scan completed without
 detecting a prohibited result, for one exact content version. It is not a promise
@@ -18,8 +18,12 @@ it is inaccessible and may reconcile into a terminal result for the same attempt
 Recovery/retry creates an explicit attempt identity. A late event from an earlier
 attempt cannot approve a newer attempt or changed object. Approved/rejected
 results are immutable for that attempt; contradictory events are recorded as a
-conflict, keep access closed and require reconciliation. Replacing content creates
-a new job and revokes eligibility based on the previous result.
+conflict and keep access closed pending separate resolution. A changed payload
+for an existing event ID is invalid and has no state effect. Replacing content
+revokes eligibility based on the previous digest. Local digest-equivalent bytes
+may reuse a prior job only with matching declared type, pinned policy version
+and current storage authorization. This is content identity, not object-incarnation
+identity; production policy changes need an explicit migration.
 
 Only the app's authenticated backend establishes tenant authority and ownership.
 The delivery path checks both current authorization and the matching successful

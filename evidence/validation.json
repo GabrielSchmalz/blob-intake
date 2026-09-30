@@ -1,0 +1,38 @@
+{
+  "createdAt": "2026-09-30T22:42:11.548043+00:00",
+  "stage": "local only",
+  "node": "v24.14.0",
+  "checks": {
+    "typecheck": "pass",
+    "test": {
+      "pass": 40,
+      "fail": 0
+    },
+    "productionBuild": "pass",
+    "sharedScenarios": {
+      "pass": 28,
+      "fail": 0
+    },
+    "compiledHttpSmoke": "pass both arms",
+    "localMarkdownTargets": "resolve",
+    "sourceInventoryHashes": "match"
+  },
+  "rendering": {
+    "method": "actual served empty-screen HTML plus inline project CSS; scripts removed; native T3 preview",
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "horizontalOverflow": false,
+      "artifact": "evidence/static-desktop.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "horizontalOverflow": false,
+      "artifact": "evidence/static-mobile.png"
+    },
+    "limitation": "Client preview cannot reach server loopback. Hydrated browser journey, file-row states and real-device evidence not verified."
+  },
+  "externalStages": "provider execution, production deployment, fresh setup-time comparison, market and organic agent discovery pending",
+  "temporaryServer": "stopped after validation"
+}

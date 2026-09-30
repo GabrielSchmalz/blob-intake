@@ -1,6 +1,6 @@
 # W003: Proposed acceptance adapter
 
-State: waiting. Depends on: W001.
+State: complete locally. Depends on: W001.
 
 Implement the same portal contract through a small proposed integration package
 with a Blob adapter, one Transloadit provider adapter, durable job/event storage,
@@ -18,3 +18,6 @@ database setup count in maintenance/cost analysis even if app code shrinks.
 
 Done locally when shared scenarios pass and a fresh developer can follow documented
 setup using fixtures. No live provider/deployment reliability is implied.
+
+Local completion evidence: [results](../../docs/results.md). Real-provider and
+production reliability remain unverified.

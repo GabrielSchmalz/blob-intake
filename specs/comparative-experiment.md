@@ -1,6 +1,7 @@
 # Comparative experiment: private file acceptance
 
-Version: planning v1, 2026-09-30. Implementation: pending.
+Version: local experiment v1, 2026-09-30. Local implementation complete.
+Evidence and limits: [results](../docs/results.md). Real-provider execution pending.
 Canonical scope: [D001](../wayfinder/decisions/D001-scope.md).
 Canonical behavior: [D002](../wayfinder/decisions/D002-acceptance-contract.md).
 Canonical scoring: [D003](../wayfinder/decisions/D003-comparison-and-gates.md).

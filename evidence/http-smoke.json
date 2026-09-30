@@ -1,0 +1,22 @@
+{
+  "createdAt": "2026-09-30T22:41:37.320Z",
+  "stage": "local compiled Next.js HTTP smoke; fixture provider",
+  "results": [
+    {
+      "arm": "baseline",
+      "upload": "pass",
+      "pendingDownloadBlocked": "pass",
+      "outageRetryClean": "pass",
+      "byteExactDownload": "pass",
+      "foreignOriginDenied": "pass"
+    },
+    {
+      "arm": "candidate",
+      "upload": "pass",
+      "pendingDownloadBlocked": "pass",
+      "outageRetryClean": "pass",
+      "byteExactDownload": "pass",
+      "foreignOriginDenied": "pass"
+    }
+  ]
+}

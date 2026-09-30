@@ -1,6 +1,6 @@
 # D001: Experiment destination and scope
 
-Status: resolved for planning. Date: 2026-09-30.
+Status: resolved for local implementation. Date: 2026-09-30.
 
 Choose a bounded Blob Intake experiment because it most directly connects to
 Vercel and admits a fair integration comparison. This is not a commercial win.
@@ -15,9 +15,10 @@ delivery. The proposed integration owns processing job metadata and recovery.
 Provider credentials remain in the owning server boundary. No client stores a
 Blob read/write token; external processing uses scoped temporary file access.
 
-Repository setup and planning are authorized. Implementation, paid jobs, remote
-publication, outreach and deployment have not been performed or authorized by
-this setup request. No new external tracker is necessary.
+Repository setup, local implementation/comparison and ordered scoped commits
+are authorized by subsequent user instructions. This local milestone is complete.
+Paid jobs, remote publication, outreach and deployment remain unexecuted and
+outside that scope. No new external tracker is necessary.
 
 Excluded first version: scan engine operations, archives, office/video formats,
 OCR, image previews, generic storage adapters, billing and a hosted dashboard.

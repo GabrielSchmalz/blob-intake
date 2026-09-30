@@ -1,17 +1,24 @@
 # Resume point
 
-Date: 2026-09-30. Local repository and Wayfinder planning set up; implementation
-not started. No remote, commit, published SDK, provider call or customer outreach.
+Date: 2026-09-30. Local implementation and comparison complete; ordered commits
+record the contract, independent engines, wire integrations, portal and evidence.
+No remote, published package, provider execution, deployment or customer outreach.
 
-Start with [MAP](MAP.md), then [W001](work/W001-contract-fixtures.md) and the
-[comparative spec](../specs/comparative-experiment.md). The immediate next work is
-the common contract and deterministic fixtures, if local implementation is requested.
-W002 baseline and W003 adapter can then be developed independently with equivalent
-behavior. W004 measures a proposed 50% setup/code reduction before product expansion.
+Start with [results](../docs/results.md) and [MAP](MAP.md). W001–W003 complete
+locally; W004 has comparative fixture and compiled HTTP evidence. Setup-time
+measurement and actual provider compatibility remain pending. W005 market and
+organic agent recommendation evidence has not been collected.
 
-Do not resurrect disproven differentiation: Blob files need not migrate to be
-processed by an incumbent, and retention No Save prevents a universal 24-hour
-disadvantage claim. Demand, price and organic agent distribution remain unknown.
+Next bounded work: a fresh developer setup trial and scoped, capped provider
+execution with test-only files after account/budget scope is available. Production
+requires shared persistence and real application authentication. Do not infer paid,
+live or publication authorization from local implementation authorization.
 
-Repository planning verification is link/dependency/source inspection only.
-Actual provider compatibility and live deployment remain separate unexecuted stages.
+Do not resurrect disproven differentiation: Blob originals need not migrate for
+incumbent processing, and No Save prevents a universal 24-hour retention claim.
+The code ratio shows packaging, not reduced total maintenance or proven demand.
+
+Run commands and local limits are in [README](../README.md). Temporary validation
+servers are stopped at the local verification endpoint; ignored runtime fixtures
+are not committed. Native preview cannot reach server loopback; static rendering
+and functional HTTP evidence have distinct limits recorded in the results.

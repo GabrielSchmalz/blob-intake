@@ -18,10 +18,19 @@ This is an immutable planning input dated 2026-09-30, not a sibling runtime
 dependency. The repository's [source ledger](research/SOURCES.md) records the
 claims used here without copying the HTML or its operational state.
 
-Local planning uses [Wayfinder](wayfinder/MAP.md). No external issue tracker is
-configured or required. Planning is complete when the next implementation has
-explicit scope, behavior, comparative measurements and stopping criteria.
+Local decisions and dependencies use [Wayfinder](wayfinder/MAP.md). No external
+issue tracker is configured or required.
 
-Current milestone: planning setup complete. Next implementation candidate is
-[W001](wayfinder/work/W001-contract-fixtures.md), followed by independently
-comparable baseline and adapter implementations. All execution results are pending.
+Current milestone: the shared contract, independent baseline and candidate adapter,
+deterministic comparative validation and local Next.js portal are implemented.
+[Results](docs/results.md) records the measured outcome and verification limits.
+The portal uses an explicit fixture provider with no actual scanning or cloud calls.
+Local SQLite persists state and uploaded bytes; it is not a persistence solution
+for serverless deployment. Authentication remains an illustrative server-owned
+local session, not production identity or membership management.
+
+Actual provider/Blob validation, deployment, buyer demand, pricing and organic AI
+recommendation evidence remain pending. A fixture result cannot establish them.
+No remote repository, package publication or hosted service is authorized or
+published. Follow [README setup](README.md#run-locally) for local execution and
+compiled production HTTP smoke validation.

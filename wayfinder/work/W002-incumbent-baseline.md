@@ -1,6 +1,6 @@
 # W002: Incumbent integration baseline
 
-State: waiting. Depends on: W001.
+State: complete locally. Depends on: W001.
 
 Create an ordinary Next.js App Router private-file portal using documented Blob
 and Transloadit interfaces. Implement the shared contract including recovery;
@@ -18,3 +18,6 @@ a separate authorized stage with capped usage and test-only files.
 
 Done locally when every shared scenario passes and baseline-specific effort is
 recorded. Live provider compatibility remains pending until W004 real execution.
+
+Local completion evidence: [results](../../docs/results.md). Real-provider and
+production reliability remain unverified.

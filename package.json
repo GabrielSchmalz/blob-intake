@@ -11,7 +11,8 @@
     "typecheck": "tsc --noEmit",
     "test": "tsx --test tests/*.test.ts",
     "check": "npm run typecheck && npm test",
-    "compare": "tsx scripts/compare.ts"
+    "compare": "tsx scripts/compare.ts",
+    "smoke": "tsx scripts/smoke-local.ts"
   },
   "dependencies": {
     "@vercel/blob": "2.8.0",

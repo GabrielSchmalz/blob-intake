@@ -1,6 +1,6 @@
 # W001: Shared contract and fixture harness
 
-State: ready for next local implementation scope. Depends on: none.
+State: complete locally. Depends on: none.
 
 Implement the [comparative specification](../../specs/comparative-experiment.md)
 as shared data types, scenario fixtures and acceptance assertions. Define storage,
@@ -15,4 +15,5 @@ late events explicitly. Record mocks as mocks, never as provider completion.
 
 Done when both arms can target the same contract, all scenario IDs have expected
 outcomes, and no external service or secret is required for local validation.
-No implementation has begun; this planning item being ready is not a live-action grant.
+Implemented in `src/contract`, `fixtures` and `tests/scenarios.ts`. Both arms pass
+the shared suite. See [results](../../docs/results.md) for execution evidence.

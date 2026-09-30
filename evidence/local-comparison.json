@@ -1,0 +1,263 @@
+{
+  "createdAt": "2026-09-30T22:40:54.441Z",
+  "node": "v24.14.0",
+  "stage": "local synthetic experiment",
+  "results": [
+    {
+      "arm": "baseline",
+      "scenario": "S01",
+      "result": "pass"
+    },
+    {
+      "arm": "baseline",
+      "scenario": "S02",
+      "result": "pass"
+    },
+    {
+      "arm": "baseline",
+      "scenario": "S03",
+      "result": "pass"
+    },
+    {
+      "arm": "baseline",
+      "scenario": "S04",
+      "result": "pass"
+    },
+    {
+      "arm": "baseline",
+      "scenario": "S05",
+      "result": "pass"
+    },
+    {
+      "arm": "baseline",
+      "scenario": "S06",
+      "result": "pass"
+    },
+    {
+      "arm": "baseline",
+      "scenario": "S07",
+      "result": "pass"
+    },
+    {
+      "arm": "baseline",
+      "scenario": "S08",
+      "result": "pass"
+    },
+    {
+      "arm": "baseline",
+      "scenario": "S09",
+      "result": "pass"
+    },
+    {
+      "arm": "baseline",
+      "scenario": "S10",
+      "result": "pass"
+    },
+    {
+      "arm": "baseline",
+      "scenario": "S11",
+      "result": "pass"
+    },
+    {
+      "arm": "baseline",
+      "scenario": "S12",
+      "result": "pass"
+    },
+    {
+      "arm": "baseline",
+      "scenario": "S13",
+      "result": "pass"
+    },
+    {
+      "arm": "baseline",
+      "scenario": "S14",
+      "result": "pass"
+    },
+    {
+      "arm": "candidate",
+      "scenario": "S01",
+      "result": "pass"
+    },
+    {
+      "arm": "candidate",
+      "scenario": "S02",
+      "result": "pass"
+    },
+    {
+      "arm": "candidate",
+      "scenario": "S03",
+      "result": "pass"
+    },
+    {
+      "arm": "candidate",
+      "scenario": "S04",
+      "result": "pass"
+    },
+    {
+      "arm": "candidate",
+      "scenario": "S05",
+      "result": "pass"
+    },
+    {
+      "arm": "candidate",
+      "scenario": "S06",
+      "result": "pass"
+    },
+    {
+      "arm": "candidate",
+      "scenario": "S07",
+      "result": "pass"
+    },
+    {
+      "arm": "candidate",
+      "scenario": "S08",
+      "result": "pass"
+    },
+    {
+      "arm": "candidate",
+      "scenario": "S09",
+      "result": "pass"
+    },
+    {
+      "arm": "candidate",
+      "scenario": "S10",
+      "result": "pass"
+    },
+    {
+      "arm": "candidate",
+      "scenario": "S11",
+      "result": "pass"
+    },
+    {
+      "arm": "candidate",
+      "scenario": "S12",
+      "result": "pass"
+    },
+    {
+      "arm": "candidate",
+      "scenario": "S13",
+      "result": "pass"
+    },
+    {
+      "arm": "candidate",
+      "scenario": "S14",
+      "result": "pass"
+    }
+  ],
+  "inventory": {
+    "baseline": [
+      {
+        "path": "src/baseline/index.ts",
+        "nonblankLines": 163,
+        "sha256": "6dac45ed7a2afb11d83266f619f8bbc3a29261558b96ccb5f3658146b677e3a7"
+      }
+    ],
+    "candidate": [
+      {
+        "path": "src/candidate/index.ts",
+        "nonblankLines": 5,
+        "sha256": "0cedf0d5a5f8d0e817a5f1a01134c06951aa725cc2a36894c8b0c9c506b3ad70"
+      }
+    ],
+    "sdk": [
+      {
+        "path": "src/adapter/index.ts",
+        "nonblankLines": 185,
+        "sha256": "e9b37fd0341e66cca7b9e6ff57701c38300596dbf49d0f96b33a8a5570e43792"
+      }
+    ],
+    "shared": [
+      {
+        "path": "src/contract/index.ts",
+        "nonblankLines": 68,
+        "sha256": "9137807dae7a8a6ab9e434e974e82ce3d7f07bdf799744f994ba25d31629d0a3"
+      },
+      {
+        "path": "src/integrations/assembly-registry.ts",
+        "nonblankLines": 33,
+        "sha256": "48ff2d2b9ec82f5011a52a973a384f991add63a7c744edaf9c84638f22ac50b9"
+      },
+      {
+        "path": "src/integrations/transloadit.ts",
+        "nonblankLines": 147,
+        "sha256": "69c16c8a8be050d36a5c053b27a717e12bd70394ab79f9fadac1f1a01990bd4e"
+      },
+      {
+        "path": "src/integrations/vercel-blob.ts",
+        "nonblankLines": 77,
+        "sha256": "f39fd0ab0811ed00dfb0040d78466192782e4e36ff8f06bea69c1cdf17b3746e"
+      },
+      {
+        "path": "src/demo/http.ts",
+        "nonblankLines": 53,
+        "sha256": "11784648d679d1ca3680ddff6ac657706e477c2324bce3810e51ff3071166bb7"
+      },
+      {
+        "path": "src/demo/runtime.ts",
+        "nonblankLines": 91,
+        "sha256": "9e0aa0cd3ea352f80341db08390449ae5e8517acef382a3e41abf52a36adbd36"
+      },
+      {
+        "path": "app/api/demo/action/route.ts",
+        "nonblankLines": 4,
+        "sha256": "b10d031ba51dab0566a7fb725dd1a1520031fbcaf52858368e8af6bec054300b"
+      },
+      {
+        "path": "app/api/demo/download/route.ts",
+        "nonblankLines": 4,
+        "sha256": "310066772062dd3b53cc3d4e16dcb6b693231719791b98ffd1461852f242f69b"
+      },
+      {
+        "path": "app/api/demo/state/route.ts",
+        "nonblankLines": 4,
+        "sha256": "323412a43e57db3179a76086b26e70fef48d78c5baadd035d4f25845f719df3b"
+      },
+      {
+        "path": "app/api/demo/upload/route.ts",
+        "nonblankLines": 4,
+        "sha256": "017e100ff57ea76442d1d3dd324419931cdae93b5c0b72be49c1fef87ad7a7cf"
+      },
+      {
+        "path": "app/layout.tsx",
+        "nonblankLines": 4,
+        "sha256": "3fb09267f77f299ddae50d277a8942855f734faab21eac126c76ac45f84ffad1"
+      },
+      {
+        "path": "app/page.tsx",
+        "nonblankLines": 2,
+        "sha256": "894da3d551172942d38d674e3ef119d617aa4fe436aacfbe0e2126422a7e11f0"
+      },
+      {
+        "path": "app/portal.tsx",
+        "nonblankLines": 42,
+        "sha256": "cb876e6d283c463516322e6ae20e37eaaf9f38fd3d370cdb79c324d88d7212a4"
+      },
+      {
+        "path": "fixtures/dependencies.ts",
+        "nonblankLines": 83,
+        "sha256": "ffa01d4896b10ca10c7c1bdc9cf9d652ba7c0d26d7f849cd984691520758743c"
+      }
+    ]
+  },
+  "measurement": {
+    "baselineAppLines": 163,
+    "candidateAppLines": 5,
+    "candidateSdkLines": 185,
+    "candidateTotalLines": 190,
+    "appFacingReduction": 0.9693251533742331,
+    "setupTime": null,
+    "setupTimeReason": "No fresh integrator or measured active-time ledger; parallel agent authoring cannot establish setup-time savings."
+  },
+  "gate": {
+    "localEquivalent": true,
+    "proposedAppCodeThresholdMet": true,
+    "decision": "continue only with a small integration trial; no hosted-business or production claim"
+  },
+  "pending": [
+    "real Blob/Transloadit execution and cost/retention measurements",
+    "deployment with shared production persistence and application authentication",
+    "fresh developer setup-time comparison",
+    "buyer willingness to pay",
+    "unprompted agent recommendations"
+  ]
+}

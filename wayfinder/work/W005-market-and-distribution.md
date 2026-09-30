@@ -1,6 +1,6 @@
 # W005: Buyer and agent channel evidence
 
-State: waiting. Depends on: W004 local evidence supporting continuation.
+State: pending external market and publication evidence; not executed. Depends on: W004 local evidence supporting continuation.
 
 Three independent lanes after a useful prototype exists:
 
