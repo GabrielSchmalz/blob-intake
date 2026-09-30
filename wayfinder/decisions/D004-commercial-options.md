@@ -1,15 +1,17 @@
 # D004: Commercial and distribution hypotheses
 
-Status: BYO prototype resolved; commercial options unresolved. Date: 2026-09-30.
+Status: initial BYO prototype historical; current hosted scanner choice in D008.
+Commercial pricing/payment options unresolved. Date: 2026-09-30.
 
-Bring-your-own Transloadit account keeps provider fees with the customer and avoids
-premature resale/scanner operations. It does not prove separate value for us.
+The initial bring-your-own Transloadit prototype kept provider fees with the
+customer. The user now selects SDK plus our hosted scanner (D008), without a
+customer Transloadit account. This changes operational responsibility and does
+not establish customer willingness to pay.
 
 An open-source integration and $29/project/month hosted orchestration are possible
-experiments, not a validated strategy or approved public offer. No license is
-selected because licensing/publishing is not necessary for local comparison.
-The initial repo is private/local in operation; absence of LICENSE conveys no
-permission to publicly reuse source. Choose a license before any release.
+experiments, not a validated strategy or approved public offer. MIT licensing is now resolved in D007 and public useful docs/example publication
+is authorized by D005. Public source license and publication do not establish
+a paid commercial offer.
 
 Managed processing around $99/month remains deferred until observed billable
 usage, minimum plans, transfer, retries, fixed hosting, support and provider terms

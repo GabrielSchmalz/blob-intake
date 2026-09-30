@@ -1,27 +1,28 @@
-# D008: Scanner implementation and operational responsibility
+# D008: SDK plus our hosted scanner
 
-Status: pending consequential hosting choice. Date: 2026-09-30.
+Status: resolved by explicit user selection. Date: 2026-09-30.
 
-The user asks whether Transloadit can be removed. It can: the SDK owns acceptance
-state/recovery and calls a pluggable scanner boundary. It need not require a
-customer Transloadit account. Authentication, private Blob and shared metadata
-on Vercel remain the application path in either case.
+The user selected the second model: SDK plus our hosted scanner. The SDK owns
+acceptance state/recovery and calls a pluggable scanner boundary. Customers need
+no Transloadit account. App authentication, private Blob and shared metadata stay
+on Vercel. Transloadit remains an optional adapter, not a launch dependency.
 
-The current recommendation is our hosted ClamAV backend with a queue and bounded
-polling/callback result binding. A worker would run outside Vercel serverless on
-the existing host; it needs roughly 4 GiB RAM and 1 GiB disk plus signature update
-and scanner maintenance. These are planning estimates, not allocated or measured
-resources. This removes the Transloadit account/subscription dependency, but
-introduces our operational responsibility. Do not imply the user has selected
-or approved this host footprint before an explicit answer to the pending choice.
+Operate isolated host services `blob-intake-clamav` and `blob-intake-worker` for
+this project. The scanner boundary is 4 GiB RAM and 1 CPU, with approximately
+1 GiB disk expected for software/signatures; check actual host capacity before
+allocation and record measured resource use. The explicit selection authorizes
+this footprint and our signature-update/scanner maintenance responsibility.
+Announce the exact services before changes; preserve unrelated host services.
+No new provider subscription or recurring paid purchase is required or implied.
 
-If selected, prefer worker-initiated queue polling and result submission, without
-a public worker endpoint. Keep scoped temporary private-file access, exact digest/
-attempt binding, server-side worker authentication and fail-closed delivery.
-Review actual host capacity and bound scanner resources before installation.
+The worker initiates queue polling and authenticated result submission; expose
+no public worker endpoint. Keep bounded retries, private file access, exact
+digest/attempt binding, worker authentication and fail-closed delivery. Treat
+worker death, stale leases and signature freshness as operational failure paths,
+not clean scan results. Persist and reconcile queue state in the shared database.
 
-Transloadit remains an optional BYO implementation if selected or useful for
-comparison. Its current wire adapters are offline-tested; that does not prove
-real scanning. Until the choice is resolved, W006 final scanner execution and
-W007's real approval journey remain pending. Shared database, SDK, public docs
-and agent measurements can progress independently.
+The selected architecture is resolved; successful installation, resource bounds,
+real scanner execution and the deployed approval journey remain unproven until
+W006/W007 evidence exists. ClamAV detects configured known threats; this selection
+does not guarantee every malicious document is caught. Billing, customer demand
+and a general hosted SaaS business remain separate validation.

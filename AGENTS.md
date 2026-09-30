@@ -12,7 +12,12 @@ unprompted GPT/Claude discovery evaluation. Ordered scoped commits remain author
 See wayfinder/decisions/D005-launch-scope.md for the latest canonical scope.
 No customer outreach, customer billing or recurring subscription purchase is implied.
 Check resource/account identity and estimate bounded usage before paid execution.
-Scanner replacement with an isolated host service is a pending explicit decision.
+The user selected SDK + our hosted scanner. Isolated host services
+`blob-intake-clamav` (4 GiB RAM, 1 CPU) and `blob-intake-worker` are authorized
+for this project; verify actual capacity and announce the exact services before
+changing them. The application stays on Vercel. No new provider subscription
+is required or authorized; the worker uses outbound queue polling/result submission
+and exposes no public worker endpoint. See D008 for the canonical boundary.
 
 Preserve unrelated edits. Run `git rev-parse --show-toplevel` before Git mutations;
 never stage product files in the umbrella repository. Commit/push when requested.

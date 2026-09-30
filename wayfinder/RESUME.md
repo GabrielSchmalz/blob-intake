@@ -11,16 +11,16 @@ Start with [MAP](MAP.md), [D006 measurement protocol](decisions/D006-launch-evid
 and W006–W009. Vercel Meima project, dedicated private Blob and Neon free shared
 database exist;
 17 real-Neon fixture checks pass. Deploy and verify authentication/shared metadata,
-then run bounded real synthetic-file/scanner recovery checks after D008 choice is resolved. Independent
+then run bounded real synthetic-file/scanner recovery checks for the selected D008 backend. Independent
 agent setup is complete: both 14-case arms pass; baseline 184 application lines/
-177.341 seconds; candidate 3 lines/54.271 seconds with 185 SDK lines. Root will save
-`evidence/agent-setup.json`; seed setup, SDK construction and human time excluded.
+177.341 seconds; candidate 3 lines/54.271 seconds with 185 SDK lines. [Agent evidence](../evidence/agent-setup.json) exists and has been inspected;
+seed setup, SDK construction and human time are excluded.
 Public source/docs and copyable SDK example are implemented;
 publish/verify their public origin before unbranded recommendation sessions.
-D008 keeps the user choice open: recommended our hosted ClamAV worker without a
-Transloadit account, about 4 GiB RAM/1 GiB disk plus updates, no public worker endpoint
-with queue polling. No explicit choice answer yet; do not install/allocate the
-worker footprint by treating the question as a resolved selection. Other lanes
+D008 is resolved: user selected SDK plus our hosted scanner without a Transloadit
+account. Isolated `blob-intake-clamav` (4 GiB RAM, 1 CPU; about 1 GiB disk) and
+`blob-intake-worker` are authorized, subject to actual capacity checks. Announce
+those services before changes; use queue polling and no public worker endpoint. Other lanes
 remain independently actionable; final scanner result proof needs deployment.
 
 Record evidence and exact deployed/commit refs as execution finishes. Real-provider
@@ -32,4 +32,4 @@ the agreed bounded endpoint and report usage/cost basis.
 
 Preserve incumbent differentiation caveats: Blob originals need not migrate and
 No Save is not a universal 24-hour retention disadvantage. Buyer outreach,
-payments and a managed commercial offering remain separate W005 follow-ups.
+payments and a paid commercial offering remain separate W005 follow-ups.

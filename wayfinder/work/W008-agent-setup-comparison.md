@@ -1,15 +1,16 @@
 # W008: Independent agent integration comparison
 
-State: independent agent setup trial complete; root evidence artifact pending save.
+State: complete independent agent setup evidence.
 Both agents pass the same fourteen scenarios. Baseline: 184 application lines,
 177.341 seconds. Candidate: 3 application lines, 54.271 seconds; 185 reusable SDK
 lines remain maintained. These are automated agent setup measurements, not human
 time. Seed preparation, SDK construction and human effort are excluded.
-The canonical machine-readable artifact will be `evidence/agent-setup.json`; do
-not claim an existing artifact until root saves and inspects it.
+The [machine-readable evidence](../../evidence/agent-setup.json) records timestamps,
+commands, failures, source hashes and source artifacts for each arm. Inspected
+2026-09-30: both independently authored integrations pass all fourteen scenarios.
 Depends on: D006 protocol; stable baseline/candidate integration entrypoints.
-Real-provider configuration parity depends on W006/W007, but local protocol setup
-and isolated agent tasks can proceed independently.
+This completed trial uses synthetic shared storage/provider inputs. It does not
+measure real scanner provisioning or production configuration effort.
 
 Use agents as explicitly requested instead of recruiting a developer. Prepare
 matching starting applications and task briefs. Assign one baseline and one

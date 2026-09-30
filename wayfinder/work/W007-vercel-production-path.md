@@ -3,7 +3,8 @@
 State: Vercel Meima project, dedicated private Blob and Neon free database created;
 deployment and authenticated real-scanner journey pending.
 Depends on: D005 scope; D002 acceptance invariants; W004 local regression evidence.
-Final deployed scanner journey depends on D008 choice and W006 scanner configuration.
+Final deployed scanner journey depends on W006 hosted scanner configuration;
+D008 selects our isolated ClamAV/worker services.
 Seventeen real-Neon fixture contract checks pass. This establishes shared database
 behavior for the tested fixture path, not actual scanning or deployed approval.
 

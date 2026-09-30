@@ -24,8 +24,9 @@ Next.js example with a verified deployed workflow. It does not mean a validated
 paid business, detection certification, generic hosted SaaS, or guaranteed organic
 recommendations. Keep the scanner boundary pluggable and authentication/membership
 app-owned. Transloadit is one optional implementation, not an SDK requirement.
-The user asks whether it can be removed; D008 records the unresolved choice
-between an optional external provider and our hosted scanner worker.
+The user explicitly selected SDK plus our hosted scanner; D008 owns the isolated
+ClamAV/worker resource and operational boundary. Transloadit is optional and no
+new provider subscription is required.
 No outreach, billing, subscription sale or Marketplace submission is implied.
 Public repository/example source uses MIT as recorded in D007; no npm release
 is required if public documentation and a usable source example suffice.
