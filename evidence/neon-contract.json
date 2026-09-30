@@ -1,0 +1,43 @@
+{
+  "recordedAt": "2026-09-30T23:03:06.548Z",
+  "target": "Own Blob Intake Neon Postgres resource attached to Vercel project",
+  "verification": "Real shared Postgres persistence with fixture storage and fixture provider",
+  "tests": 17,
+  "passed": 17,
+  "failed": 0,
+  "skipped": 0,
+  "durationMs": 138048.729618,
+  "sharedContractScenarios": 14,
+  "independentPoolConcurrency": true,
+  "restartDurability": true,
+  "manifestAndProviderBindingImmutability": true,
+  "remainingDisposableTestSchemas": 0,
+  "sourceHashes": {
+    "src/persistence/postgres.ts": "b727dbabecd9e13a9e045038b068e5bc06ae1504a4ec6cc6f302961c9acccec7",
+    "src/production/acceptance.ts": "94a2d7be0e187546f5df8c08fd85a54848340fd1edd7dccbf05390861f6ffca9",
+    "tests/postgres.test.ts": "abfebb6c8327d2904d69f4868d58968ac8653d244f392df949b695af049ede7e"
+  },
+  "limitations": [
+    "No real Blob or scanning calls in this suite",
+    "No customer authentication signup or membership validation",
+    "Provider orphan submission recovery remains separate"
+  ],
+  "followUp": {
+    "recordedAt": "2026-09-30T23:13:09.365Z",
+    "tests": 2,
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0,
+    "durationMs": 15683.059316,
+    "checks": [
+      "Exact tenant and stored-owner scoped recovery never polls other jobs",
+      "Concurrent migrations serialize across independent connection pools"
+    ],
+    "remainingDisposableTestSchemas": 0,
+    "sourceHashes": {
+      "src/persistence/postgres.ts": "6df0f416405a13f3c1baf681aa37a7f8ce7ae967688f43496d577fa7c0ba7ded",
+      "src/production/acceptance.ts": "60bb24ea0a52a3b1d172a520b3efe4524bf4385e9cc3771719e4e20ad9437fd7",
+      "tests/postgres.test.ts": "ae4e00ceca20c81309b6c3dc4068f7e3786220c7dc52718ffd42cffc048b4d1a"
+    }
+  }
+}

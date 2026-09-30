@@ -10,3 +10,8 @@ runtime/
 artifacts/private/
 *.log
 *.tsbuildinfo
+.vercel/
+
+# Integration-installed local agent tooling, not product source.
+.agents/
+skills-lock.json
