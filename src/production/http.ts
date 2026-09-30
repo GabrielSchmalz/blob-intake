@@ -19,6 +19,14 @@ export const readBoundedBody=(request:Request,limit:number)=>Effect.gen(function
 });
 const json=<A,I>(schema:Schema.Schema<A,I>,body:string)=>Schema.decodeUnknown(Schema.parseJson(schema))(body).pipe(Effect.mapError(deny));
 export const parseUploadBody=(body:string)=>json(Schema.Unknown,body).pipe(Effect.flatMap(value=>Schema.is(UploadBody)(value)?Effect.succeed(value):Effect.fail(deny())));
+export const uploadCallbackUrl=(configuredOrigin:string|undefined=process.env.BLOB_INTAKE_PUBLIC_URL)=>Effect.try({
+ try:()=>{
+  if(!configuredOrigin)throw new Error("missing public origin");
+  const url=new URL(configuredOrigin);
+  if(url.protocol!=="https:"||url.username!==""||url.password!==""||url.pathname!=="/"||url.search!==""||url.hash!=="")throw new Error("invalid public origin");
+  return `${url.origin}/api/intake/upload`;
+ },catch:()=>new IntakeError({code:"persistence"}),
+});
 export type Operation="session"|"prepare"|"upload"|"finish"|"state"|"action"|"download"|"callback"|"reconcile";
 export interface HttpDependencies { readonly auth?:AuthConfiguration; readonly runtime?:()=>Effect.Effect<ProductionRuntime,IntakeError> }
 export function handleIntake(request:Request,operation:Operation,deps:HttpDependencies={}):Promise<Response>{
@@ -58,7 +66,7 @@ export function handleIntake(request:Request,operation:Operation,deps:HttpDepend
   if(operation==="upload"){
    if(uploadBody?.type!=="blob.generate-client-token")return yield* Effect.fail(deny());
    const body=uploadBody;
-   return Response.json(yield* Effect.tryPromise({try:()=>handleUpload({request,body,token:runtime.token,onBeforeGenerateToken:async(pathname,payload)=>Effect.runPromise(Effect.gen(function*(){const input=yield* json(FileInput,payload??"");const file=yield* runtime.owned(context,input.fileId);if(pathname!==file.pathname||file.digest!==null)return yield* Effect.fail(deny());return {maximumSizeInBytes:MAX_BYTES,allowedContentTypes:[file.declaredType],allowOverwrite:false,addRandomSuffix:false,validUntil:Date.now()+300000,tokenPayload:JSON.stringify({...context,fileId:input.fileId})};})),onUploadCompleted:async()=>{throw new Error("wrong event");}}),catch:deny}));
+   return Response.json(yield* Effect.tryPromise({try:()=>handleUpload({request,body,token:runtime.token,onBeforeGenerateToken:async(pathname,payload)=>Effect.runPromise(Effect.gen(function*(){const input=yield* json(FileInput,payload??"");const file=yield* runtime.owned(context,input.fileId);if(pathname!==file.pathname||file.digest!==null)return yield* Effect.fail(deny());const callbackUrl=yield* uploadCallbackUrl();return {callbackUrl,maximumSizeInBytes:MAX_BYTES,allowedContentTypes:[file.declaredType],allowOverwrite:false,addRandomSuffix:false,validUntil:Date.now()+300000,tokenPayload:JSON.stringify({...context,fileId:input.fileId})};})),onUploadCompleted:async()=>{throw new Error("wrong event");}}),catch:deny}));
   }
   if(operation==="finish"){const input=yield* json(FileInput,yield* readBoundedBody(request,1024));const job=yield* runtime.finish(context,input.fileId);return Response.json({job:{jobId:job.jobId,state:job.state,reason:job.reason}});}
   if(operation==="action"){const input=yield* json(Action,yield* readBoundedBody(request,1024));const job=yield* runtime.app.retry(context,input.jobId);return Response.json({job:{jobId:job.jobId,state:job.state,reason:job.reason}});}

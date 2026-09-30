@@ -2,10 +2,10 @@ import { strict as assert } from "node:assert";
 import { createHash, createHmac } from "node:crypto";
 import test from "node:test";
 import { Effect } from "effect";
-import { handleUpload } from "@vercel/blob/client";
+import { getPayloadFromClientToken, handleUpload } from "@vercel/blob/client";
 import { IntakeError } from "../src/contract/index";
 import { authenticate, authenticateKey, sessionCookie } from "../src/production/auth";
-import { handleIntake, parseUploadBody, readBoundedBody } from "../src/production/http";
+import { handleIntake, parseUploadBody, readBoundedBody, uploadCallbackUrl } from "../src/production/http";
 const keyA="fixture-key-aaaaaaaaaaaaaaaaaaaaaaaa",keyB="fixture-key-bbbbbbbbbbbbbbbbbbbbbbbb";
 const identities=[{keyHash:createHash("sha256").update(keyA).digest("hex"),tenantId:"a",userId:"u-a"},{keyHash:createHash("sha256").update(keyB).digest("hex"),tenantId:"b",userId:"u-b"}];
 const auth={keysJson:JSON.stringify(identities),sessionSecret:"fixture-session-secret-32-characters-long",now:()=>100000};
@@ -49,3 +49,15 @@ test("official Blob callback verification preserves signed field ordering and ad
  await assert.rejects(()=>handleUpload({token,body:parsed,request:new Request(origin,{method:"POST",headers:{"x-vercel-signature":"00"},body}),onBeforeGenerateToken:async()=>({})}));
 });
 test("non-operator GET cannot trigger reconciliation",async()=>{let opened=0;const response=await handleIntake(req("GET",{authorization:`Bearer ${keyA}`}),"reconcile",{auth,runtime:()=>{opened++;return Effect.fail(new IntakeError({code:"persistence"}));}});assert.equal(response.status,403);assert.equal(opened,0);});
+
+test("Blob upload token uses trusted public callback rather than protected request origin",async()=>{
+ const callbackUrl=await Effect.runPromise(uploadCallbackUrl("https://blob-intake.vercel.app"));
+ const body=await Effect.runPromise(parseUploadBody(JSON.stringify({type:"blob.generate-client-token",payload:{pathname:"intake/owned/file",multipart:false,clientPayload:null}})));
+ const result=await handleUpload({token:"vercel_blob_rw_fixture_secret_for_offline_test",body,request:new Request("https://protected-branch.vercel.app/api/intake/upload?callbackUrl=https://attacker.example",{method:"POST"}),onBeforeGenerateToken:async()=>({callbackUrl,allowOverwrite:false,addRandomSuffix:false}),onUploadCompleted:async()=>{}});
+ assert.ok("clientToken" in result);if(!("clientToken" in result))return;
+ const payload=getPayloadFromClientToken(result.clientToken);assert.equal(payload.onUploadCompleted?.callbackUrl,"https://blob-intake.vercel.app/api/intake/upload");assert.equal(payload.allowOverwrite,false);
+});
+test("upload callback configuration accepts only a trusted HTTPS origin",async()=>{
+ assert.equal(await Effect.runPromise(uploadCallbackUrl("https://blob-intake.vercel.app/")),"https://blob-intake.vercel.app/api/intake/upload");
+ for(const input of ["","not-a-url","http://blob-intake.vercel.app","https://user:password@blob-intake.vercel.app","https://blob-intake.vercel.app/other","https://blob-intake.vercel.app/?callback=evil","https://blob-intake.vercel.app/#fragment"]){assert.equal(await Effect.runPromise(Effect.isFailure(uploadCallbackUrl(input))),true);}
+});

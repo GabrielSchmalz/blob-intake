@@ -1,0 +1,29 @@
+services:
+  clamav:
+    image: clamav/clamav@sha256:ebec5bc138401b36ae987caa1a3fa3c3b2a21ed3d51f0bfa5852825e663e67b0
+    container_name: blob-intake-clamav
+    restart: unless-stopped
+    user: '100:101'
+    entrypoint: /init-unprivileged
+    mem_limit: 4g
+    memswap_limit: 4g
+    cpus: 1
+    pids_limit: 64
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    read_only: true
+    ports: ['127.0.0.1:3310:3310']
+    environment:
+      FRESHCLAM_CHECKS: '12'
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=96m,uid=100,gid=101
+      - /var/log/clamav:rw,noexec,nosuid,size=8m,uid=100,gid=101
+    volumes:
+      - scanner-db:/var/lib/clamav
+      - ./clamd.conf:/etc/clamav/clamd.conf:ro
+    logging:
+      options: {max-size: 5m, max-file: '2'}
+volumes:
+  scanner-db:
+    external: true
+    name: blob-intake-clamav-db
