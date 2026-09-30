@@ -24,7 +24,7 @@ const readBody = (request: Request, limit: number) => Effect.gen(function* () {
   }), reader => Effect.tryPromise({ try: () => reader.cancel(), catch: () => new IntakeError({ code: "storage" }) }).pipe(Effect.ignore));
 });
 export function handleDemo(request: Request, operation: "state" | "upload" | "action" | "download"): Promise<Response> {
-  if (!guard(request, operation === "upload" || operation === "action")) return Promise.resolve(Response.json({ error: "Local demo access requires a loopback host and same-origin mutations." }, { status: 403 }));
+  if (process.env.VERCEL === "1" || !guard(request, operation === "upload" || operation === "action")) return Promise.resolve(Response.json({ error: "Local demo access requires a loopback host and same-origin mutations." }, { status: 403 }));
   const program = Effect.gen(function* () {
     const url = new URL(request.url);
     if (operation === "action") {
