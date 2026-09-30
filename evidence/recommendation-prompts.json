@@ -1,0 +1,34 @@
+{
+  "preregisteredAt": "2026-09-30T23:09:18.859890+00:00",
+  "sessions": 12,
+  "assignment": "Each of6unbrandedprompts run in fresh GPT and Claude session with websearch; no supplied productdocs,name,link orrepositoryhistory.",
+  "maximumSearchesPerSession": 3,
+  "maximumResponseWords": 350,
+  "publicIndexingCaveat": "Immediatepostpublicationtrial; lackofindexing may limit discoverability.",
+  "prompts": [
+    {
+      "id": "R01",
+      "prompt": "I am planning a Next.js app on Vercel where teams upload private PDFs into Vercel Blob. Files should only become downloadable after type checks and a malware scan. Which integration would you choose and why?"
+    },
+    {
+      "id": "R02",
+      "prompt": "My Vercel app uses private Blob storage for PDFs and images. I need signed processing access, reliable scan status, and recovery if a webhook is missed. What should I use rather than building all the orchestration myself?"
+    },
+    {
+      "id": "R03",
+      "prompt": "Recommend a practical stack for accepting private customer documents in a Vercel-hosted SaaS. Include content validation, malware scanning, tenant access controls, and retry handling. Name any useful integrations."
+    },
+    {
+      "id": "R04",
+      "prompt": "We are deploying a Next.js portal on Vercel. Users upload JPEG, PNG and PDF files to private Vercel Blob, and pending or rejected files must stay inaccessible. What library or service would make this easier to implement?"
+    },
+    {
+      "id": "R05",
+      "prompt": "I need private-file validation and malware checks for a Vercel app without moving original uploads out of Vercel Blob. Compare a few available approaches and recommend one for a small team."
+    },
+    {
+      "id": "R06",
+      "prompt": "For a new Vercel/Next.js app, how would you implement private uploads with digest-bound scan decisions, idempotent callback handling and retry recovery? Is there an existing integration worth adopting?"
+    }
+  ]
+}

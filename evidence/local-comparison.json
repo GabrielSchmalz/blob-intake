@@ -259,5 +259,7 @@
     "fresh developer setup-time comparison",
     "buyer willingness to pay",
     "unprompted agent recommendations"
-  ]
+  ],
+  "sourceRef": "ce4bc4d",
+  "historicalStage": "Completed local experiment before production/public-site work; inventory hashes resolve against this Git ref."
 }

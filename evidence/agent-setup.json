@@ -1,0 +1,148 @@
+{
+  "createdAt": "2026-09-30T23:06:59.396581+00:00",
+  "stage": "independent native agent setup experiment with synthetic storage/provider",
+  "model": "gpt-6.1-sol",
+  "reasoningEffort": "medium (inherited configuration)",
+  "arms": [
+    {
+      "startedAt": "2026-09-30T23:02:42.409768+00:00",
+      "commands": [
+        "python3: initialize measurement.json startedAt",
+        "pwd; rg --files -g AGENTS.md -g package.json -g '*.ts'",
+        "cat /home/arista/.agents/skills/typescript-best-practices/SKILL.md",
+        "cat /home/arista/.agents/skills/typescript-best-practices/references/effect-first.md",
+        "cat src/contract/index.ts fixtures/dependencies.ts package.json tests/integration.test.ts",
+        "cat tests/scenarios.ts",
+        "write src/integration.ts; npm test",
+        "./node_modules/.bin/tsc --noEmit --target es2022 --module nodenext --moduleResolution nodenext --skipLibCheck src/integration.ts",
+        "./node_modules/.bin/tsc --ignoreConfig --noEmit --target es2022 --module nodenext --moduleResolution nodenext --skipLibCheck --strict src/integration.ts",
+        "./node_modules/.bin/tsc --ignoreConfig --noEmit --target es2022 --module nodenext --moduleResolution nodenext --skipLibCheck --strict --types node src/integration.ts",
+        "python3: finalize measurement.json and count integration nonblank lines"
+      ],
+      "failedIterations": [
+        {
+          "kind": "typecheck command configuration",
+          "commandIndex": 8,
+          "reason": "TS5112 requires --ignoreConfig with explicit source paths"
+        },
+        {
+          "kind": "typecheck command configuration",
+          "commandIndex": 9,
+          "reason": "Node types require --types node"
+        }
+      ],
+      "finishedAt": "2026-09-30T23:05:39.750352+00:00",
+      "commandCount": 11,
+      "processPollCount": 1,
+      "implementationIterations": 1,
+      "testRuns": 1,
+      "testResult": {
+        "total": 14,
+        "passed": 14,
+        "failed": 0,
+        "exitCode": 0
+      },
+      "typecheckResult": {
+        "passed": true,
+        "exitCode": 0
+      },
+      "integrationFiles": [
+        "src/integration.ts"
+      ],
+      "integrationNonblankLines": 184,
+      "integrationTotalLines": 186,
+      "sdkLines": 0,
+      "elapsedSeconds": 177.341,
+      "elapsedDefinition": "Own wall-clock duration from first measurement write to completed tests and typecheck; no human-time claim",
+      "sharedSetupExcluded": true,
+      "sourceSha256": "f662e64a7c25094cfa6fde7f4ca36af38e9680eb1834000e245d76ff20e17e06",
+      "sourceArtifact": "evidence/agent-setup/baseline.ts.txt"
+    },
+    {
+      "startedAt": "2026-09-30T23:02:57.149924Z",
+      "commands": [
+        {
+          "number": 1,
+          "action": "Initialize measurement.json with startedAt",
+          "result": "passed"
+        },
+        {
+          "number": 2,
+          "action": "Inspect candidate file inventory, package, contract, supplied SDK, fixtures, and scenarios",
+          "result": "passed",
+          "note": "Output truncated; SDK and acceptance scenarios visible."
+        },
+        {
+          "number": 3,
+          "action": "Write contract-typed SDK integration and record command history",
+          "result": "passed"
+        },
+        {
+          "number": 4,
+          "action": "npm test",
+          "result": "passed",
+          "tests": 14,
+          "passed": 14,
+          "failed": 0,
+          "durationMs": 13716.661482
+        },
+        {
+          "number": 5,
+          "action": "Poll running npm test session to obtain completion",
+          "result": "passed"
+        },
+        {
+          "number": 6,
+          "action": "Record final UTC time, file inventory, line counts and results",
+          "result": "passed"
+        }
+      ],
+      "failedIterations": [],
+      "measurementScope": "Automated integration elapsed time; not human time. Supplied SDK usage was directed, not organic discovery.",
+      "comparisonDisclosure": "Application integration is a minimal wrapper. Baseline builds state integration; SDK moves this work into its supplied implementation.",
+      "finishedAt": "2026-09-30T23:03:51.420927Z",
+      "elapsedAutomatedIntegrationSeconds": 54.271003,
+      "commandCount": 6,
+      "shellCommandCount": 5,
+      "testRuns": 1,
+      "result": {
+        "acceptanceCases": 14,
+        "passed": 14,
+        "failed": 0,
+        "sdkDefectObserved": false
+      },
+      "changedFiles": [
+        "src/integration.ts",
+        "measurement.json"
+      ],
+      "fileInventory": [
+        "fixtures/dependencies.ts",
+        "measurement.json",
+        "package.json",
+        "src/adapter/index.ts",
+        "src/contract/index.ts",
+        "src/integration.ts",
+        "tests/integration.test.ts",
+        "tests/scenarios.ts"
+      ],
+      "applicationCode": {
+        "path": "src/integration.ts",
+        "physicalLines": 4,
+        "nonblankLines": 3
+      },
+      "suppliedSdkSource": {
+        "path": "src/adapter/index.ts",
+        "physicalLines": 187,
+        "nonblankLines": 185
+      },
+      "sourceSha256": "45c36c06a8f94a99fac27486a90bf3a9c0a8497c16e42364e8916a22f7484000",
+      "sourceArtifact": "evidence/agent-setup/candidate.ts.txt"
+    }
+  ],
+  "sharedInputs": {
+    "contractSha256": "9137807dae7a8a6ab9e434e974e82ce3d7f07bdf799744f994ba25d31629d0a3",
+    "scenariosSha256": "cbc32846b1bb5cd1554c982372978003715e01c5413accbef1b535ba1cf551d2",
+    "candidateSdkSha256": "e9b37fd0341e66cca7b9e6ff57701c38300596dbf49d0f96b33a8a5570e43792"
+  },
+  "interpretation": "Both arms pass the same14scenarios. Candidate uses an already-built185lineSDK; baseline authors its ownstateengine. Elapsedtime excludes seed preparation, dependency installation andSDKconstruction. Single agent trial, nothuman effort orproductionprovider setup savings."
+}

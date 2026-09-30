@@ -1,0 +1,4 @@
+import { createIntake } from "./adapter/index.js";
+import type { AppFactory } from "./contract/index.js";
+
+export const createApp: AppFactory = (dependencies) => createIntake(dependencies);

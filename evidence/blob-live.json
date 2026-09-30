@@ -1,0 +1,17 @@
+{
+  "createdAt": "2026-09-30T23:13:15.965Z",
+  "stage": "actual Vercel private Blob trial",
+  "region": "iad1",
+  "syntheticFiles": 2,
+  "totalUploadBytes": 114,
+  "digest": "35fc2749fc374de75bc0c3249b83b57841a2adfe8b2dc29bb7941b6c07aeef89",
+  "unsignedReadStatus": 403,
+  "signedReadStatus": 200,
+  "exactPathIsolationStatus": 403,
+  "expiredReadStatus": 403,
+  "expiryWaitMs": 11000,
+  "byteExact": true,
+  "cleanup": "exact two trial blobs deleted",
+  "scan": "not executed; independent of pending scanner choice",
+  "incrementalCostEstimate": "Two tiny writes and bounded reads, below one cent at ordinary published operation rates; included-plan allowance not separately measured"
+}

@@ -1,0 +1,186 @@
+import { createHash, randomUUID } from "node:crypto";
+import { DatabaseSync } from "node:sqlite";
+import { Effect, Schema } from "effect";
+import { IntakeError, MAX_BYTES, POLICY_VERSION, type AppFactory, type AuthContext, type JobStatus, type ProviderEvent } from "./contract/index.js";
+
+const reasonSchema = Schema.Literal("type", "size", "mismatch", "threat", "outage", "expired", "unknown", "conflict", "changed");
+const jobSchema = Schema.Struct({
+  jobId: Schema.String, tenantId: Schema.String, fileId: Schema.String,
+  digest: Schema.String.pipe(Schema.pattern(/^[a-f0-9]{64}$/)), declaredType: Schema.String,
+  policyVersion: Schema.String, state: Schema.Literal("pending", "processing", "approved", "rejected", "failed"),
+  reason: Schema.NullOr(reasonSchema), attemptId: Schema.NullOr(Schema.String),
+  providerId: Schema.NullOr(Schema.String), updatedAt: Schema.Number,
+});
+const eventSchema = Schema.Struct({
+  eventId: Schema.String.pipe(Schema.minLength(1)), attemptId: Schema.String.pipe(Schema.minLength(1)),
+  digest: Schema.String.pipe(Schema.pattern(/^[a-f0-9]{64}$/)),
+  outcome: Schema.Literal("clean", "threat", "failed", "unknown"), reason: Schema.NullOr(reasonSchema),
+});
+const fileSchema = Schema.Struct({ bytes: Schema.instanceOf(Uint8Array), declaredType: Schema.String });
+const hash = (bytes: Uint8Array): string => createHash("sha256").update(bytes).digest("hex");
+const key = (...parts: readonly string[]): string => JSON.stringify(parts);
+function policy(bytes: Uint8Array, declaredType: string): JobStatus["reason"] {
+  if (bytes.length > MAX_BYTES) return "size";
+  const prefix = (expected: readonly number[]) => expected.every((value, index) => bytes[index] === value);
+  const actual = prefix([37, 80, 68, 70, 45]) ? "application/pdf"
+    : prefix([137, 80, 78, 71, 13, 10, 26, 10]) ? "image/png"
+    : prefix([255, 216, 255]) ? "image/jpeg" : null;
+  return actual === null ? "type" : actual !== declaredType ? "mismatch" : null;
+}
+
+export const createApp: AppFactory = (dependencies) => Effect.gen(function* () {
+  const db = yield* Effect.try({
+    try: () => {
+      const database = new DatabaseSync(dependencies.databasePath);
+      database.exec("PRAGMA journal_mode=WAL; CREATE TABLE IF NOT EXISTS kv (key TEXT PRIMARY KEY, value TEXT NOT NULL)");
+      return database;
+    }, catch: () => new IntakeError({ code: "persistence" }),
+  });
+  const persisted = <A>(operation: () => A): Effect.Effect<A, IntakeError> => Effect.try({
+    try: operation, catch: () => new IntakeError({ code: "persistence" }),
+  });
+  const get = (name: string): string | null => {
+    const row = db.prepare("SELECT value FROM kv WHERE key = ?").get(name);
+    if (!row) return null;
+    if (typeof row.value !== "string") throw new Error("Invalid persisted value");
+    return row.value;
+  };
+  const put = (name: string, value: string): void => {
+    db.prepare("INSERT INTO kv(key,value) VALUES (?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value").run(name, value);
+  };
+  const readJob = (id: string): JobStatus | null => {
+    const value = get(key("job", id));
+    return value === null ? null : Schema.decodeUnknownSync(Schema.parseJson(jobSchema))(value);
+  };
+  const saveJob = (job: JobStatus): void => put(key("job", job.jobId), JSON.stringify(job));
+  const transaction = <A>(operation: () => A): A => {
+    db.exec("BEGIN IMMEDIATE");
+    try {
+      const result = operation();
+      db.exec("COMMIT");
+      return result;
+    } catch (error) {
+      db.exec("ROLLBACK");
+      throw error;
+    }
+  };
+  const file = (context: AuthContext, id: string) => dependencies.storage.read(context, id).pipe(
+    Effect.flatMap(Schema.decodeUnknown(fileSchema)),
+    Effect.mapError(() => new IntakeError({ code: "denied" })),
+  );
+  const authorized = (context: AuthContext, id: string) => Effect.gen(function* () {
+    const job = yield* persisted(() => readJob(id));
+    if (job === null || job.tenantId !== context.tenantId) return yield* Effect.fail(new IntakeError({ code: "not_found" }));
+    yield* file(context, job.fileId);
+    return job;
+  });
+  const register = (context: AuthContext, fileId: string) => Effect.gen(function* () {
+    const stored = yield* file(context, fileId);
+    const digest = hash(stored.bytes);
+    const reason = policy(stored.bytes, stored.declaredType);
+    return yield* persisted(() => transaction(() => {
+      const identity = key("identity", context.tenantId, fileId, digest, stored.declaredType, POLICY_VERSION);
+      const existingId = get(identity);
+      const existing = existingId === null ? null : readJob(existingId);
+      const job: JobStatus = existing ?? {
+        jobId: randomUUID(), tenantId: context.tenantId, fileId, digest, declaredType: stored.declaredType,
+        policyVersion: POLICY_VERSION, state: reason === null ? "pending" : "rejected", reason,
+        attemptId: null, providerId: null, updatedAt: dependencies.clock.now(),
+      };
+      saveJob(job);
+      put(identity, job.jobId);
+      put(key("current", context.tenantId, fileId), job.jobId);
+      return job;
+    }));
+  });
+  const start = (context: AuthContext, id: string, retrying: boolean) => Effect.gen(function* () {
+    const old = yield* authorized(context, id);
+    const stored = yield* file(context, old.fileId);
+    const current = yield* persisted(() => get(key("current", context.tenantId, old.fileId)));
+    if (current !== old.jobId || hash(stored.bytes) !== old.digest || stored.declaredType !== old.declaredType || policy(stored.bytes, stored.declaredType) !== null) {
+      return yield* Effect.fail(new IntakeError({ code: "inaccessible" }));
+    }
+    if (retrying && (old.reason === "conflict" || old.state !== "failed")) return yield* Effect.fail(new IntakeError({ code: "inaccessible" }));
+    if (!retrying && old.state !== "pending") return old;
+    const attemptId = randomUUID();
+    const job: JobStatus = { ...old, state: "processing", reason: null, attemptId, providerId: null, updatedAt: dependencies.clock.now() };
+    yield* persisted(() => transaction(() => {
+      saveJob(job);
+      put(key("attempt", attemptId), job.jobId);
+    }));
+    const providerId = yield* dependencies.provider.submit({
+      attemptId, tenantId: job.tenantId, fileId: job.fileId, digest: job.digest,
+      bytes: stored.bytes, declaredType: stored.declaredType,
+    });
+    return yield* persisted(() => transaction(() => {
+      const latest = readJob(id);
+      if (latest === null) throw new Error("Lost durable attempt");
+      if (latest.attemptId !== attemptId) return latest;
+      const result = { ...latest, providerId, updatedAt: dependencies.clock.now() };
+      saveJob(result);
+      return result;
+    }));
+  });
+  const apply = (event: ProviderEvent) => Effect.gen(function* () {
+    const validated = yield* Schema.decodeUnknown(eventSchema)(event).pipe(Effect.mapError(() => new IntakeError({ code: "invalid_callback" })));
+    const canonical = JSON.stringify(validated);
+    const result = yield* persisted(() => transaction(() => {
+      const prior = get(key("event", validated.eventId));
+      if (prior !== null) return prior === canonical ? "duplicate" : "collision";
+      const id = get(key("attempt", validated.attemptId));
+      const job = id === null ? null : readJob(id);
+      if (job === null || job.digest !== validated.digest) return "invalid";
+      put(key("event", validated.eventId), canonical);
+      if (job.attemptId !== validated.attemptId) return "stale";
+      if (job.reason === "conflict") return "stale";
+      const terminal = validated.outcome === "clean" || validated.outcome === "threat";
+      if (!terminal && (job.state === "approved" || job.state === "rejected")) return "stale";
+      const contradictory = (job.state === "approved" && validated.outcome === "threat")
+        || (job.state === "rejected" && validated.outcome === "clean");
+      const state: JobStatus["state"] = contradictory ? "rejected" : validated.outcome === "clean" ? "approved"
+        : validated.outcome === "threat" ? "rejected" : "failed";
+      const reason: JobStatus["reason"] = contradictory ? "conflict" : validated.outcome === "clean" ? null
+        : validated.outcome === "threat" ? "threat" : validated.reason ?? (validated.outcome === "unknown" ? "unknown" : "outage");
+      saveJob({ ...job, state, reason, updatedAt: dependencies.clock.now() });
+      return "applied";
+    }));
+    if (result === "collision" || result === "invalid") return yield* Effect.fail(new IntakeError({ code: "invalid_callback" }));
+    return { eventId: validated.eventId, applied: result === "applied" };
+  });
+  const callback = (raw: Parameters<typeof dependencies.provider.verifyCallback>[0]) => dependencies.provider.verifyCallback(raw).pipe(Effect.flatMap(apply));
+  const reconcile = () => Effect.gen(function* () {
+    const jobs = yield* persisted(() => db.prepare("SELECT value FROM kv WHERE key LIKE ?").all('["job",%').map((row) => {
+      if (typeof row.value !== "string") throw new Error("Invalid job row");
+      return Schema.decodeUnknownSync(Schema.parseJson(jobSchema))(row.value);
+    }));
+    let count = 0;
+    for (const job of jobs) {
+      if (job.attemptId === null || (job.state !== "processing" && job.state !== "failed") || job.reason === "conflict") continue;
+      const attemptId = job.attemptId;
+      const event = yield* dependencies.provider.poll(attemptId);
+      if (event === null) continue;
+      if (event.attemptId !== attemptId || event.digest !== job.digest) return yield* Effect.fail(new IntakeError({ code: "invalid_callback" }));
+      const receipt = yield* apply(event);
+      if (receipt.applied) count++;
+    }
+    return count;
+  });
+  const deliver = (context: AuthContext, fileId: string) => Effect.gen(function* () {
+    const stored = yield* file(context, fileId);
+    const job = yield* persisted(() => {
+      const id = get(key("current", context.tenantId, fileId));
+      return id === null ? null : readJob(id);
+    });
+    if (job === null || job.state !== "approved" || job.tenantId !== context.tenantId
+      || job.digest !== hash(stored.bytes) || job.declaredType !== stored.declaredType
+      || job.policyVersion !== POLICY_VERSION || policy(stored.bytes, stored.declaredType) !== null) {
+      return yield* Effect.fail(new IntakeError({ code: "inaccessible" }));
+    }
+    return stored.bytes;
+  });
+  return {
+    register, submit: (context, id) => start(context, id, false), status: authorized, callback,
+    reconcile, retry: (context, id) => start(context, id, true), deliver,
+    close: () => persisted(() => db.close()),
+  };
+});
