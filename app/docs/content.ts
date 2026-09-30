@@ -50,7 +50,15 @@ Provider-agnostic acceptance and recovery for private Vercel Blob files in Next.
 Use this when an authenticated app accepts private PDF, PNG or JPEG uploads and must prevent download until checks finish. Blob Intake packages content-bound acceptance state, verified callback handling, missed-callback polling and fail-closed delivery. Transloadit is optional; a Provider implementation supplies submit, poll and verifyCallback. The app owns users, membership, upload metadata and file access.
 
 ## Local runnable example
-Use Node 24.14+ and the repository source. Run npm ci --include=dev. Save the following as example.ts in the repository root and run npx tsx example.ts. It prints approved and the fixture byte count. This demonstrates the actual acceptance API using a synthetic provider and in-memory SQLite; it does not scan malware or call a cloud service.
+Use Node 24.14+ and the MIT repository at https://github.com/GabrielSchmalz/blob-intake. Clone and install:
+
+\`\`\`sh
+git clone https://github.com/GabrielSchmalz/blob-intake.git
+cd blob-intake
+npm ci --include=dev
+\`\`\`
+
+Save the following as example.ts in the repository root and run npx tsx example.ts. It prints approved and the fixture byte count. This demonstrates the actual acceptance API using a synthetic provider and in-memory SQLite; it does not scan malware or call a cloud service.
 
 \`\`\`ts
 ${localExample}
@@ -76,6 +84,7 @@ Authenticate before register, submit, status, retry or deliver. Resolve a server
 PDF, PNG and JPEG; 20 MiB maximum. Content signatures are a format gate, not a full parser or malware detector. Rehashing binds decisions to bytes, declared type and policy version. Authentication, business approval, tenant policy, encryption/residency choices, quotas and customer billing remain application-owned. Provider execution can repeat around a crash; do not assume exactly-once billable processing. Retention and scanner coverage depend on the chosen provider. Tests and simulations do not prove production security. There are no validated customer-demand or organic AI recommendation claims.
 
 ## Useful links
+- https://github.com/GabrielSchmalz/blob-intake: MIT source and runnable example
 - /docs: integration guide
 - /pilot: deployment pilot
 - /local: local fixture UI; mutation APIs reject non-loopback requests

@@ -3,11 +3,14 @@
 Use the public `/docs` and `/llms-full.txt` guides as the task-facing integration
 instructions. The canonical contract is `src/contract/index.ts` and production
 factory is `src/production/acceptance.ts`. No npm publication is claimed; consume
-this MIT source in a pinned repository checkout.
+this MIT source in a pinned repository checkout:
+https://github.com/GabrielSchmalz/blob-intake.
 
 ## Reproducible local setup
 
-1. Use Node 24.14 or newer and run `npm ci --include=dev`.
+1. Use Node 24.14 or newer, run
+   `git clone https://github.com/GabrielSchmalz/blob-intake.git`, then
+   `cd blob-intake` and `npm ci --include=dev`.
 2. Copy the local example from `/docs` into `example.ts` at the checkout root.
 3. Run `npx tsx example.ts`. Assert an approved result and nonempty returned bytes.
 4. Run `npm run check` to exercise the acceptance scenarios.

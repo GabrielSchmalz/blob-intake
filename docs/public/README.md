@@ -11,6 +11,9 @@ must verify its actual alias. The public pilot is `/pilot`, owned by the product
 HTTP implementation. `/local` retains the existing fixture UI and is excluded
 from indexing; its API mutations independently reject external origins.
 
+The public MIT source is https://github.com/GabrielSchmalz/blob-intake. The guide
+and agent index link the repository explicitly and include clone/install commands.
+
 These surfaces describe an early MIT source integration. They claim no published
 npm package, scanner certification, customer demand or organic AI recommendation.
 Provider costs, coverage and retention remain provider-dependent.
