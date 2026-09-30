@@ -1,11 +1,11 @@
 # Blob Intake
 
-A local comparative experiment in private-file acceptance for Next.js apps using
-Vercel Blob. The baseline and candidate adapter implement the same acceptance
+An early SDK plus managed ClamAV scanner for private-file acceptance in Next.js
+apps using your own Vercel Blob store. The baseline and candidate adapter implement the same acceptance
 contract: content-bound decisions, tenant isolation, gated downloads and durable
 recovery. `blob-intake` remains a working name, not an approved public brand.
 
-**Status: acceptance SDK, shared Postgres workflow and integration guides implemented.**
+**Status: SDK and shared Postgres workflow implemented; managed-scanner pilot in progress.**
 See [results and evidence limits](docs/results.md) for the measured outcome.
 The `/local` portal uses a fixture provider; it performs no malware scan. The
 `/pilot` app uses authenticated private Blob uploads and shared Postgres metadata.
@@ -13,10 +13,31 @@ Its scanner backend is not configured yet, so submissions fail closed. A complet
 scan would not guarantee that content is harmless.
 
 The experiment compares application-owned baseline orchestration with an SDK
-using equivalent behavior. Transloadit is an optional provider, not a mandatory
-developer account. Hosted or self-hosted scanners can implement the same Provider
-contract. Real private Blob access and shared Neon persistence have been verified;
+using equivalent behavior. The selected product combines the SDK with our managed ClamAV scanner. Developers
+use their Vercel Blob store and a server-only Blob Intake key; no Transloadit
+account is required. The Provider contract remains an extension point. Real private Blob access and shared Neon persistence have been verified;
 actual malware scanning and the deployed acceptance journey are still pending.
+
+## Integration and pilot access
+
+Public guide: https://blob-intake.vercel.app/docs. MIT source:
+https://github.com/GabrielSchmalz/blob-intake. The source SDK is supported; there
+is no published npm package. Pilot keys are operator-provisioned. Automated
+signup and customer billing are not yet available.
+
+Keep the Vercel Blob read/write token in your application backend. The managed-scanner adapter targets a short-lived exact-path signed Blob URL
+and content digest, authenticated with a server-only Blob Intake key. This
+customer-store flow remains subject to live verification. The current `/pilot`
+UI uses our dedicated private Blob store. Never give the scanner your Blob store credentials. Shared PostgreSQL
+records bind each result to a tenant and immutable content; downloads still pass
+application authorization and content checks. Current scanner/deployment evidence
+must be verified before claiming successful live scanning.
+
+The pilot worker checks an idle queue every 600 seconds so the free Neon database
+can autosuspend. Processing can start up to 10 minutes after submission; an active
+backlog is processed more frequently. No scan-throughput guarantee is offered.
+Use `reconcileFor(context)` in authenticated application routes; global
+`reconcile()` belongs only to trusted operator or cron jobs.
 
 ## Run locally
 

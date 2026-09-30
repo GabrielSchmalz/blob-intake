@@ -33,9 +33,13 @@ uploaded pathname select an arbitrary file. Use the deployment pilot's HTTP
 boundary as an example, not as a substitute for the application's own session and
 membership logic.
 
-Transloadit is an optional provider implementation. The durable acceptance API
-accepts other implementations with submit, poll and verified-callback behavior.
-Replacing a provider does not remove the requirement for actual scanning when the
+The chosen product is the SDK plus our managed ClamAV scanner. Developers bring
+their own private Vercel Blob store and use an operator-provisioned Blob Intake
+key on their backend in the reusable integration. The current pilot UI uses our
+dedicated private Blob store; customer-store adapter verification is separate. No Transloadit account is required. Blob credentials remain
+inside the developer application, never in the scanner or client. The durable
+acceptance API retains other provider implementations as extension points.
+Choosing a provider does not remove the requirement for actual scanning when the
 application's policy promises a malware check.
 
 ## Measuring an agent trial
