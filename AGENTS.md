@@ -5,7 +5,8 @@ Read [CONTEXT.md](CONTEXT.md) and [wayfinder/MAP.md](wayfinder/MAP.md) before wo
 Canonical decisions live in `wayfinder/decisions`; the map links their summaries.
 Update the relevant decision and dependent work items when scope changes.
 
-Current authorization is local repository and planning setup. It does not include
+Current authorization includes local implementation, comparative validation and
+ordered scoped commits, requested after repository setup. It does not include
 paid provider usage, credentials, customer outreach, remote publication, package
 publication, deployment, billing or live processing. Ordinary local inspection
 and planning updates need no additional approval. Do not treat a ready work item
