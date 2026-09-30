@@ -1,0 +1,11 @@
+# Private and generated state; examples may contain placeholders only.
+.env
+.env.*
+!.env.example
+node_modules/
+.next/
+dist/
+coverage/
+runtime/
+artifacts/private/
+*.log
