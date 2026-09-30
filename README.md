@@ -5,15 +5,18 @@ Vercel Blob. The baseline and candidate adapter implement the same acceptance
 contract: content-bound decisions, tenant isolation, gated downloads and durable
 recovery. `blob-intake` remains a working name, not an approved public brand.
 
-**Status: local implementations and comparative validation are available.**
+**Status: acceptance SDK, shared Postgres workflow and integration guides implemented.**
 See [results and evidence limits](docs/results.md) for the measured outcome.
-The shared portal uses a fixture provider: no actual malware scan or cloud job
-occurs. A completed scan would not guarantee that content is harmless.
+The `/local` portal uses a fixture provider; it performs no malware scan. The
+`/pilot` app uses authenticated private Blob uploads and shared Postgres metadata.
+Its scanner backend is not configured yet, so submissions fail closed. A completed
+scan would not guarantee that content is harmless.
 
-The experiment compares application-owned baseline orchestration with a proposed
-adapter using equivalent behavior. Existing providers can plausibly process
-signed Blob URLs without relocating original storage. Actual Blob/Transloadit
-compatibility remains unexecuted; our hypothesis concerns less integration work.
+The experiment compares application-owned baseline orchestration with an SDK
+using equivalent behavior. Transloadit is an optional provider, not a mandatory
+developer account. Hosted or self-hosted scanners can implement the same Provider
+contract. Real private Blob access and shared Neon persistence have been verified;
+actual malware scanning and the deployed acceptance journey are still pending.
 
 ## Run locally
 
@@ -27,7 +30,7 @@ npm run compare
 npm run dev
 ```
 
-Open `http://127.0.0.1:3087`. Select either implementation, upload a PDF/PNG/JPEG,
+Open `http://127.0.0.1:3087/local`. Select either implementation, upload a PDF/PNG/JPEG,
 and simulate clean, threat or outage results. Approval gates downloads; outage
 supports retry. The interface labels its illustrative server-owned session and
 fixture controls. See [local portal](docs/local-portal.md) for details.
@@ -53,7 +56,11 @@ authority, not production authentication. Keep it bound to loopback.
 - [Sources and evidence limits](research/SOURCES.md)
 - [Resume point](wayfinder/RESUME.md)
 
-Actual provider execution, deployment, buyer demand, willingness to pay and organic
-AI recommendations remain pending. Fixture equivalence does not establish those
-outcomes or production readiness. This is an independent local Git repository;
-no remote, public package or hosted service has been published.
+Public integration documentation lives at `/docs`, with machine-readable guides
+at `/llms.txt` and `/llms-full.txt`. Source consumption is documented under MIT;
+there is no npm package release. See [launch map](wayfinder/MAP.md),
+[agent measurement](evidence/agent-setup.json), [real Blob trial](evidence/blob-live.json),
+[Neon proof](evidence/neon-contract.json), and [pilot operations](docs/pilot.md).
+
+Buyer demand, willingness to pay and organic AI recommendations remain unproven.
+A fixture pass does not establish those outcomes or production readiness.

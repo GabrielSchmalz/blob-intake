@@ -31,6 +31,7 @@ local session, not production identity or membership management.
 
 Actual provider/Blob validation, deployment, buyer demand, pricing and organic AI
 recommendation evidence remain pending. A fixture result cannot establish them.
-No remote repository, package publication or hosted service is authorized or
-published. Follow [README setup](README.md#run-locally) for local execution and
+Public documentation/example publication and Vercel deployment are now
+authorized under D005. Scanner selection remains pending under D008. No paid
+business, detection certification or organic recommendation outcome is established. Follow [README setup](README.md#run-locally) for local execution and
 compiled production HTTP smoke validation.
