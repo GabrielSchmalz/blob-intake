@@ -21,6 +21,12 @@ services:
     volumes:
       - scanner-db:/var/lib/clamav
       - ./clamd.conf:/etc/clamav/clamd.conf:ro
+    healthcheck:
+      test: ['CMD', 'clamdscan', '--ping', '1']
+      interval: 30s
+      timeout: 5s
+      start_period: 90s
+      retries: 3
     logging:
       options: {max-size: 5m, max-file: '2'}
 volumes:
