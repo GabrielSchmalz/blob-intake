@@ -1,8 +1,8 @@
 import { createHash } from "node:crypto";
 import { get, issueSignedToken, presignUrl } from "@vercel/blob";
 import { Effect } from "effect";
-import { IntakeError, MAX_BYTES, type AuthContext, type Storage, type Submission } from "../contract/index.js";
-import type { ScopedSource } from "./transloadit.js";
+import { IntakeError, MAX_BYTES, type AuthContext, type Storage, type Submission } from "../contract/index";
+import type { ScopedSource } from "./transloadit";
 
 /** Resolve using authenticated app metadata; upload JSON cannot supply path/tenant. */
 export interface PrivateBlobReference { readonly pathname: string; readonly digest: string }

@@ -1,7 +1,7 @@
 import { DatabaseSync } from "node:sqlite";
 import { Effect, Schema } from "effect";
-import { IntakeError } from "../contract/index.js";
-import type { AssemblyBinding, AssemblyRegistry } from "./transloadit.js";
+import { IntakeError } from "../contract/index";
+import type { AssemblyBinding, AssemblyRegistry } from "./transloadit";
 const Binding = Schema.Struct({ attemptId: Schema.String, assemblyId: Schema.String, tenantId: Schema.String, fileId: Schema.String, digest: Schema.String });
 const persistenceError = () => new IntakeError({ code: "persistence" });
 /** Single-host local adapter. Database path and directory are application-owned/private. */

@@ -1,6 +1,6 @@
 import { createHash, createHmac, randomUUID, timingSafeEqual } from "node:crypto";
 import { Effect, Schema } from "effect";
-import { IntakeError, MAX_BYTES, type Provider, type ProviderEvent, type Submission } from "../contract/index.js";
+import { IntakeError, MAX_BYTES, type Provider, type ProviderEvent, type Submission } from "../contract/index";
 
 export interface AssemblyBinding {
   readonly attemptId: string;

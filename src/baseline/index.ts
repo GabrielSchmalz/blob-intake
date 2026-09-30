@@ -1,7 +1,7 @@
 import { createHash, randomUUID } from "node:crypto";
 import { DatabaseSync } from "node:sqlite";
 import { Effect, Schema } from "effect";
-import { IntakeError, MAX_BYTES, POLICY_VERSION, type AcceptanceApp, type AppFactory, type AuthContext, type JobStatus, type ProviderEvent, type StoredFile } from "../contract/index.js";
+import { IntakeError, MAX_BYTES, POLICY_VERSION, type AcceptanceApp, type AppFactory, type AuthContext, type JobStatus, type ProviderEvent, type StoredFile } from "../contract/index";
 
 const ReasonSchema = Schema.Literal("type", "size", "mismatch", "threat", "outage", "expired", "unknown", "conflict", "changed");
 const StatusSchema = Schema.Struct({ jobId: Schema.String, tenantId: Schema.String, fileId: Schema.String, digest: Schema.String, declaredType: Schema.String, policyVersion: Schema.String, state: Schema.Literal("pending", "processing", "approved", "rejected", "failed"), reason: Schema.NullOr(ReasonSchema), attemptId: Schema.NullOr(Schema.String), providerId: Schema.NullOr(Schema.String), updatedAt: Schema.Number });
