@@ -74,11 +74,6 @@ export const createIntake: AppFactory = (deps) => Effect.gen(function* () {
     const existing = db.prepare("SELECT data FROM intake_events WHERE id=?").get(event.eventId);
     if (existing !== undefined) {
       if (Schema.decodeUnknownSync(RowSchema)(existing).data !== serialized) {
-        const previous = Schema.decodeUnknownSync(EventSchema)(JSON.parse(Schema.decodeUnknownSync(RowSchema)(existing).data));
-        if ((previous.outcome === "clean" && event.outcome === "threat") || (previous.outcome === "threat" && event.outcome === "clean")) {
-          save({ ...job, state: "failed", reason: "conflict", updatedAt: deps.clock.now() });
-          return { eventId: event.eventId, applied: true };
-        }
         throw new IntakeError({ code: "invalid_callback" });
       }
       return { eventId: event.eventId, applied: false };

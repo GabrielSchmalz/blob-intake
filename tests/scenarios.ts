@@ -144,6 +144,11 @@ export const scenarios: readonly Scenario[] = [
     const corrected = await run(h.app.callback(signed(contentBoundEvent)));
     assert.equal(corrected.applied, true, "Invalid digest must not consume the valid event identity");
     assert.equal((await run(h.app.status(tenantA, job.jobId))).state, "approved");
+    const collision = await run(Effect.either(h.app.callback(signed({ ...contentBoundEvent, outcome: "threat", reason: "threat" }))));
+    assert.equal(collision._tag, "Left", "Mutated canonical event identity must reject without a state effect");
+    if (collision._tag === "Left") assert.equal(collision.left.code, "invalid_callback");
+    assert.equal((await run(h.app.status(tenantA, job.jobId))).state, "approved");
+    assert.deepEqual(await run(h.app.deliver(tenantA, "file")), pdf);
   }),
   scenario("S07", "lost callback recovered by exact-attempt polling", async (h) => {
     const job = await submitted(h);
