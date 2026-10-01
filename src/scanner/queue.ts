@@ -70,6 +70,7 @@ export function createScannerQueue(options:QueueOptions){
    return row===undefined?null:Schema.decodeUnknownSync(TaskRow)(row);
   }),
   finish:(task:ScanTask,event:ProviderEvent)=>databaseEffect(async()=>{
+   if(event.attemptId!==task.data.attemptId||event.digest!==task.data.digest)throw fail();
    const result=await options.pool.query(`UPDATE ${t.tasks} SET status='completed',event=$1,data=CASE WHEN data->'source'->>'kind'='capability' THEN jsonb_set(data,'{source,ciphertext}','""'::jsonb) ELSE data END,lease_token=NULL,lease_until=NULL,callback_available_at=$2 WHERE attempt_id=$3 AND status='leased' AND lease_token=$4 AND lease_until>$2`,[serialized(event),options.now(),task.data.attemptId,task.lease_token]);return result.rowCount===1;
   }),
   retry:(task:ScanTask)=>databaseEffect(async()=>{

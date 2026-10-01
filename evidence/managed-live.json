@@ -1,0 +1,41 @@
+{
+  "scannerHealth": {
+    "engine": "1.5.4",
+    "signatureVersion": "28139",
+    "signatureBuiltAt": 1790749458000,
+    "checkedAt": 1790812622614
+  },
+  "createdAt": "2026-09-30T23:57:02.616Z",
+  "stage": "actual deployed Vercel/private Blob/Neon/hosted ClamAV workflow",
+  "origin": "https://blob-intake.vercel.app",
+  "syntheticFileCount": 4,
+  "totalUploadBytes": 5243425,
+  "checks": {
+    "publicOrigins": "six deployed pages/indexes return 200 actual content; robots/sitemap canonical",
+    "authentication": "unauthenticated, cross-origin, global reconcile and fixture endpoint denied; secure authenticated session succeeds",
+    "pilot": {
+      "largeUploadBytes": 5242880,
+      "directBlobClientUpload": true,
+      "preScanDenied": true,
+      "wrongTenantDenied": true,
+      "realThreatRejected": true,
+      "suppressedCallbackRecoveredByAuthenticatedPolling": true,
+      "cleanByteExact": true,
+      "exactPathDownloadIsolation": true
+    },
+    "externalSdk": {
+      "realSubmitAndPoll": true,
+      "digestMismatchDenied": true,
+      "tenantIsolation": true,
+      "sourceStore": "same dedicated trial store with exact-file signed access; not an independent customer-store trial"
+    }
+  },
+  "limitations": [
+    "Small synthetic trial, not universal detection or reliability certification",
+    "Agent setup is separate fixture evidence",
+    "Previously measured source expiry is separate evidence/blob-live.json",
+    "Public discovery evaluation recorded separately"
+  ],
+  "cleanup": "exact captured trial Blob paths and associated metadata removed",
+  "costBasis": "four files about 5 MiB; bounded operations below one cent at ordinary Blob operation/transfer rates, existing hosting and maintenance excluded"
+}

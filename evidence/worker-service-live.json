@@ -1,0 +1,13 @@
+{
+  "createdAt": "2026-10-01T00:01:32.812Z",
+  "stage": "automatic systemd managed worker proof",
+  "service": "blob-intake-worker.service",
+  "scanner": "blob-intake-clamav",
+  "trigger": "Own service restarted after enqueue to avoid idle polling delay",
+  "outcome": "clean",
+  "elapsedMs": 12205,
+  "signatureCapabilityWiped": true,
+  "syntheticBytes": 41,
+  "cleanup": "Exact own synthetic Blob and scan queue row removed",
+  "limits": "One automatic service scan; not uptime or throughput certification"
+}

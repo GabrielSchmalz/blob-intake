@@ -1,0 +1,32 @@
+{
+  "recordedAt": "2026-09-30T23:57:02.846Z",
+  "tests": 7,
+  "passed": 7,
+  "failed": 0,
+  "skipped": 0,
+  "durationMs": 16051.721585,
+  "realPostgresTests": 3,
+  "syntheticProtocolCryptoPolicyTests": 4,
+  "remainingDisposableTestSchemas": 0,
+  "checks": [
+    "Tenant-owner namespaced attempts and scoped polling",
+    "Renewed capabilities deduplicate immutable source identity",
+    "Terminal encrypted capabilities erased",
+    "Lease fencing rejects stale workers",
+    "Raw callback signature, expiry and durable event binding",
+    "Callback retry cap with polling recovery",
+    "Worker rejects MIME disguise before scan",
+    "Transient storage failures exhaust closed"
+  ],
+  "sourceHashes": {
+    "src/scanner/queue.ts": "64638f3c5c13d3a8eb22861c4a100a96c78d0fbfb91d2c34aac4f34734d9f23d",
+    "src/scanner/clamav.ts": "4c3e6b7e0d386580d1530f1ffbfb078c346145941800cee69dad5f0f7403b18d",
+    "src/scanner/worker.ts": "1f87a7b8e933a109fd3e4d89f5357a03da727c64e5580d5be4cefe7be3f12f32",
+    "src/production/provider.ts": "905e51397a830e1b7e8b7dec68990a90c219879ee63cce5a53f875c0545b47f6"
+  },
+  "limitations": [
+    "Clam daemon in these tests is a synthetic loopback TCP fixture",
+    "Blob bytes in these tests are synthetic/injected",
+    "Actual ClamAV + Vercel Blob proof belongs to live provider trial"
+  ]
+}

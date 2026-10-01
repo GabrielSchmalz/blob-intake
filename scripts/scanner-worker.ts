@@ -9,9 +9,9 @@ const program=Effect.gen(function*(){
  const args=process.argv.slice(2),once=args.includes("--once");
  const idleMs=env.BLOB_INTAKE_WORKER_IDLE_MS??env.SCANNER_IDLE_SECONDS*1000;
  const numberOption=(name:string)=>{const index=args.indexOf(name);if(index<0)return null;const value=Number(args[index+1]);if(!Number.isSafeInteger(value)||value<=0)throw new IntakeError({code:"provider"});return value;};
- const limits=yield* Effect.try({try:()=>({maxTasks:numberOption("--max-tasks"),durationSeconds:numberOption("--duration")}),catch:()=>new IntakeError({code:"provider"})});
+ const limits=yield* Effect.try({try:()=>{for(let i=0;i<args.length;i++){if(args[i]==="--once")continue;if(args[i]==="--max-tasks"||args[i]==="--duration"){i++;continue;}throw new IntakeError({code:"provider"});}return {maxTasks:numberOption("--max-tasks"),durationSeconds:numberOption("--duration")};},catch:()=>new IntakeError({code:"provider"})});
  if(idleMs<1000||idleMs>3600000)return yield* Effect.fail(new IntakeError({code:"provider"}));
- yield* Effect.acquireUseRelease(Effect.sync(()=>new pg.Pool({connectionString:env.DATABASE_URL,max:3,connectionTimeoutMillis:10000,idleTimeoutMillis:10000,query_timeout:15000})),pool=>Effect.gen(function*(){
+ const execution=Effect.acquireUseRelease(Effect.sync(()=>new pg.Pool({connectionString:env.DATABASE_URL,max:3,connectionTimeoutMillis:10000,idleTimeoutMillis:10000,query_timeout:15000})),pool=>Effect.gen(function*(){
   const worker=yield* createScannerWorker({pool,schema:env.BLOB_INTAKE_SCHEMA,now:Date.now,callbackSecret:env.CALLBACK_SECRET,blobToken:env.BLOB_READ_WRITE_TOKEN,callbackUrl:env.BLOB_INTAKE_CALLBACK_URL,clam:{host:env.CLAMAV_HOST,port:env.CLAMAV_PORT,timeoutMs:60000}});
   const started=Date.now();let processed=0;
   for(;;){
@@ -26,6 +26,7 @@ const program=Effect.gen(function*(){
    yield* Effect.sleep(sleepMs);
   }
  }),pool=>Effect.tryPromise({try:()=>pool.end(),catch:()=>new IntakeError({code:"persistence"})}).pipe(Effect.ignore));
+ if(limits.durationSeconds===null)yield* execution;else yield* execution.pipe(Effect.timeoutOption(limits.durationSeconds*1000));
 });
 const fiber=Effect.runFork(program.pipe(Effect.catchAll(error=>Effect.sync(()=>{process.stderr.write(`Scanner worker stopped: ${error.code}\n`);process.exitCode=1;}))));
 const stop=()=>{void Effect.runPromise(Fiber.interrupt(fiber));};
