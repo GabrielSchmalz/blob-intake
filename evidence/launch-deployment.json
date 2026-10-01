@@ -1,0 +1,60 @@
+{
+  "verifiedAt": "2026-10-01T00:15:08.981Z",
+  "origin": "https://blob-intake.vercel.app",
+  "deploymentId": "dpl_6kE4zsUkFFFJ3zjZAKcxLBH7gWwd",
+  "uniqueDeploymentUrl": "https://blob-intake-7jpbpldaj-meima.vercel.app",
+  "deployedSourceCommit": "d79df1d",
+  "checks": [
+    {
+      "path": "/",
+      "status": 200
+    },
+    {
+      "path": "/docs",
+      "status": 200
+    },
+    {
+      "path": "/llms.txt",
+      "status": 200
+    },
+    {
+      "path": "/llms-full.txt",
+      "status": 200
+    },
+    {
+      "path": "/robots.txt",
+      "status": 200
+    },
+    {
+      "path": "/sitemap.xml",
+      "status": 200
+    },
+    {
+      "path": "/api/intake/state",
+      "status": 403
+    },
+    {
+      "path": "/api/scans?attemptId=invalid",
+      "status": 403
+    }
+  ],
+  "authenticatedStateStatus": 200,
+  "trialMetadataRemoved": true,
+  "workerState": "active",
+  "clamavHealth": "healthy",
+  "localChecks": {
+    "typecheck": "passed",
+    "ordinarySuite": {
+      "tests": 79,
+      "passed": 58,
+      "skippedDatabaseChecks": 21,
+      "failed": 0
+    },
+    "separateNeonChecks": "17 plus2 followups; scanner7 includes3 actualPG and4 synthetic overlapping ordinary suite",
+    "productionBuild": "passed locally and on Vercel"
+  },
+  "limitations": [
+    "Deployment URL protection differs from public production alias",
+    "Physical mobile devices, independent customer-store account, sustained uptime and billing are not established"
+  ]
+}

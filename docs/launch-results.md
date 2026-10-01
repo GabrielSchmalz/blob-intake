@@ -3,7 +3,9 @@
 Recorded: 2026-10-01. The SDK plus our hosted scanner pilot is launched at
 [Blob Intake](https://blob-intake.vercel.app), with [public integration docs](https://blob-intake.vercel.app/docs)
 and [MIT source/example](https://github.com/GabrielSchmalz/blob-intake).
-The verified deployment uses source commit `869b481`. All four requested execution
+The current verified deployment uses source commit `d79df1d`;
+[deployment evidence](../evidence/launch-deployment.json) records its ID and final checks.
+The original four-file trial ran on `869b481`. All four requested execution
 lanes ran; recommendation discovery produced a negative exploratory result with
 protocol deviations, not a validated balanced discovery gate or commercial win.
 
@@ -45,6 +47,11 @@ origin in the T3 browser, including desktop/mobile docs and denied pilot login.
 No horizontal page overflow was observed and code blocks are keyboard focusable.
 A resized desktop browser is not a physical mobile-device test; authenticated
 upload/scan/download behavior was verified separately over deployed HTTP.
+
+[Actual outage/restart evidence](../evidence/scanner-recovery-live.json) additionally
+shows that stopping our ClamAV daemon left downloads blocked and the scan durably
+queued. Restarting the daemon completed the same attempt with a verified callback
+and byte-exact download. Exact test resources were removed and both services restored.
 
 ## Verification and agent setup
 

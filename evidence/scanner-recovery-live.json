@@ -1,0 +1,22 @@
+{
+  "createdAt": "2026-10-01T00:13:01.397Z",
+  "stage": "actual managed ClamAV outage and restart recovery",
+  "origin": "https://blob-intake.vercel.app",
+  "daemonStopped": true,
+  "unavailableOutcome": "retry",
+  "downloadWhileUnavailable": 409,
+  "durableQueueRetainedWithoutResult": true,
+  "recoveredOutcome": "clean",
+  "realCallbackDelivered": true,
+  "byteExact": true,
+  "health": {
+    "engine": "1.5.4",
+    "signatureVersion": "28139",
+    "signatureBuiltAt": 1790749458000,
+    "checkedAt": 1790813578665
+  },
+  "syntheticBytes": 52,
+  "digest": "39098d88c3b2538996eb744155afa08a61cd53d8405cce0fdd4e34728d21773e",
+  "cleanup": "Exact own trial Blob and associated acceptance/scan rows removed; daemon and worker restored",
+  "limits": "One controlled own-service outage; not sustained uptime or general recovery certification"
+}

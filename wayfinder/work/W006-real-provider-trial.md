@@ -3,7 +3,8 @@
 State: complete real Blob and managed scanner trial. Recorded: 2026-10-01.
 Evidence: [deployed real workflow](../../evidence/managed-live.json),
 [exact-path/expiry](../../evidence/blob-live.json), and
-[automatic worker service](../../evidence/worker-service-live.json).
+[automatic worker service](../../evidence/worker-service-live.json), and
+[actual scanner outage/restart](../../evidence/scanner-recovery-live.json).
 Clean approval, real safe-test-specimen rejection, digest mismatch denial,
 missed-callback recovery and exact cleanup pass. See [launch results](../../docs/launch-results.md)
 for cost/resource and detection limitations.

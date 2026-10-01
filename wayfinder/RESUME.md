@@ -27,3 +27,8 @@ No further model calls or branded search are part of this completed bounded tria
 Buyer outreach, pricing/payment validation, customer billing, npm release and
 Marketplace submission remain excluded/unexecuted W005 follow-ups. Future commercial
 or discovery iteration needs its own concrete objective and bounded execution.
+
+Current Vercel deployment source is `d79df1d`; exact deployment ID and final
+service/content/authentication checks are in `evidence/launch-deployment.json`.
+Real daemon outage/restart recovery also passes, with exact cleanup and both
+services restored (`evidence/scanner-recovery-live.json`).
