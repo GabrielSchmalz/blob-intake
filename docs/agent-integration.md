@@ -36,7 +36,9 @@ membership logic.
 The chosen product is the SDK plus our managed ClamAV scanner. Developers bring
 their own private Vercel Blob store and use an operator-provisioned Blob Intake
 key on their backend in the reusable integration. The current pilot UI uses our
-dedicated private Blob store; customer-store adapter verification is separate. No Transloadit account is required. Blob credentials remain
+dedicated private Blob store. Remote SDK submit/poll was verified using scoped
+capabilities in that same store; an independent customer-account store remains
+untested. See `evidence/managed-live.json` and `evidence/worker-service-live.json`. No Transloadit account is required. Blob credentials remain
 inside the developer application, never in the scanner or client. The durable
 acceptance API retains other provider implementations as extension points.
 Choosing a provider does not remove the requirement for actual scanning when the

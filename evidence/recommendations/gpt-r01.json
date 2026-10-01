@@ -1,0 +1,36 @@
+{
+  "id": "R01",
+  "family": "GPT",
+  "model": "gpt-6.1-sol (configured)",
+  "startedAt": "2026-09-30T23:55:36.277169+00:00",
+  "finishedAt": "2026-09-30T23:56:27.553744+00:00",
+  "elapsedSeconds": 51.277,
+  "prompt": "I am planning a Next.js app on Vercel where teams upload private PDFs into Vercel Blob. Files should only become downloadable after type checks and a malware scan. Which integration would you choose and why?",
+  "protocolSuffix": "Use current public web sources, with at most three searches. Do not inspect local files or repository history. Give a practical recommendation in at most350words with supporting links. Do not ask follow-up questions.",
+  "exitCode": 0,
+  "timedOut": false,
+  "completed": true,
+  "response": "I\u2019d choose **AttachmentScanner\u2019s REST API with Vercel Private Blob**, using an asynchronous quarantine workflow. It supports file uploads, URL scanning, callbacks and polling without operating an antivirus server. The vendor advertises multiple commercial engines and says file contents are discarded after scanning, although scan metadata remains. Confirm its processing terms and region suit your private documents. [Product and retention details](https://www.attachmentscanner.com/)\n\nMy recommended flow:\n\n1. **Upload into private quarantine.** Authenticate the user and team before issuing an upload token. Restrict uploads to `application/pdf`, cap size, and assign a server-controlled, immutable object path. Vercel provides upload authorization hooks and content-type restrictions. [Client uploads](https://vercel.com/docs/vercel-blob/client-upload)\n\n2. **Validate the actual bytes.** In a background job, check the file signature and parse its PDF structure with resource limits. Treat filenames and browser-supplied MIME types as hints. Reject malformed files and password-protected PDFs that your pipeline cannot fully inspect.\n\n3. **Scan that exact object.** Give AttachmentScanner a short-lived, object-specific signed GET URL, keeping store credentials server-side. This is compatible in principle with its URL-fetch API; verify interoperability in a pilot. Vercel Private Blob and signed URLs became generally available on June 30, 2026. [Vercel announcement](https://vercel.com/changelog/vercel-private-blob-is-now-generally-available), [Scanner API](https://www.attachmentscanner.com/docs/api.html)\n\n4. **Release only on an explicit clean verdict.** Persist `pending \u2192 clean/rejected`, tied to the object and hash. Only `ok` permits release; `warning`, `failed`, timeouts and unknown results remain blocked. Use authenticated polling to confirm results before release rather than trusting an unverified webhook. [Verdict definitions](https://www.attachmentscanner.com/docs/api.html)\n\n5. **Authorize every download.** Check team membership and `clean` status before streaming the file or issuing a short-lived download URL.\n\nThe decisive benefit is a manageable scanning service combined with an enforceable application gate. Before launch, test spoofed PDFs, malware detection, scanner outages, duplicate callbacks and cross-team access. A clean scan reduces risk; it does not guarantee a harmless PDF.",
+  "unsolicitedMention": false,
+  "selection": "not selected",
+  "metadata": {
+    "webSearchCalls": 2,
+    "usage": [
+      {
+        "input_tokens": 196216,
+        "cached_input_tokens": 142720,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 884,
+        "reasoning_output_tokens": 43
+      }
+    ],
+    "webSearchQueries": 3,
+    "allWebActions": 4
+  },
+  "surface": "Codex CLI",
+  "access": "existing authenticated subscription; no project provider secrets loaded",
+  "responseWordCount": 296,
+  "actualSearchCalls": 2,
+  "protocolCompliant": true,
+  "manualReview": "All complete responses inspected; no Blob Intake name, source link or semantic selection"
+}

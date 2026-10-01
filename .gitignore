@@ -15,3 +15,6 @@ artifacts/private/
 # Integration-installed local agent tooling, not product source.
 .agents/
 skills-lock.json
+
+# Python research-runner bytecode.
+__pycache__/

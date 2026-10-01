@@ -92,7 +92,7 @@ ${localExample}
 \`\`\`
 
 ## Managed-scanner architecture
-The reusable integration targets your Next.js backend, your private Vercel Blob store and a server-only Blob Intake key. The current /pilot UI uses our dedicated private Blob store; it is not evidence of a customer-store integration. The Blob read/write token stays inside your application backend. The managed provider adapter will submit an exact-path, short-lived signed Blob URL and content digest to our scanner. Never send your Blob store token. The reusable customer-store flow remains subject to live verification. Shared PostgreSQL metadata binds the result to a tenant, immutable bytes and a scan attempt. An approved result still requires authorization and a matching content check before delivery. Pilot keys are provisioned by an operator. Automated signup, customer billing and a published npm package are not available yet. Scanner coverage, availability and live verification must be checked in the deployment evidence; this guide is not proof of a completed scan.
+The reusable integration targets your Next.js backend, your private Vercel Blob store and a server-only Blob Intake key. The current /pilot UI uses our dedicated private Blob store. The external SDK submit/poll flow was also verified with scoped signed access in that same store; an independent customer-account store was not tested. The Blob read/write token stays inside your application backend. The managed provider adapter submits an exact-path, short-lived signed Blob URL and content digest to our scanner. Never send your Blob store token. A bounded deployed trial verified clean acceptance, compressed-PDF harmless EICAR rejection, missed-callback poll recovery, tenant isolation and digest mismatch denial. Shared PostgreSQL metadata binds the result to a tenant, immutable bytes and a scan attempt. An approved result still requires authorization and a matching content check before delivery. Pilot keys are provisioned by an operator. Automated signup, customer billing and a published npm package are not available yet. Source evidence lives in evidence/managed-live.json and evidence/worker-service-live.json. ClamAV 1.5.4 with signature version 28139 was used in that trial. This is bounded execution evidence, not universal detection, uptime or throughput certification.
 
 ## Production workflow
 Use createPostgresIntake from src/production/acceptance with a shared pg Pool, authorized Storage, Provider and Clock. The factory initializes its schema by default. To apply it separately, use initializePostgres({pool,schema}) from src/persistence/postgres.ts. SQLite is local-only and must not be used for shared serverless state. Keep database, storage and scanner secrets in server-only environment configuration. No browser receives database credentials, Blob read tokens or scanner secrets.
@@ -121,6 +121,8 @@ PDF, PNG and JPEG; 20 MiB maximum. Content signatures are a format gate, not a f
 
 ## Useful links
 - https://github.com/GabrielSchmalz/blob-intake: MIT source and runnable example
+- https://github.com/GabrielSchmalz/blob-intake/blob/main/evidence/managed-live.json: bounded live managed-scanner workflow
+- https://github.com/GabrielSchmalz/blob-intake/blob/main/evidence/worker-service-live.json: one automatic worker scan
 - /docs: integration guide
 - /pilot: deployment pilot
 - /local: local fixture UI; mutation APIs reject non-loopback requests

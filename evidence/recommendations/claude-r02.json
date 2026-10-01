@@ -1,0 +1,59 @@
+{
+  "id": "R02",
+  "family": "Claude",
+  "model": "claude-haiku-4-5-20251001,claude-opus-5-5",
+  "startedAt": "2026-09-30T23:57:23.400562+00:00",
+  "finishedAt": "2026-09-30T23:57:58.509039+00:00",
+  "elapsedSeconds": 35.108,
+  "prompt": "My Vercel app uses private Blob storage for PDFs and images. I need signed processing access, reliable scan status, and recovery if a webhook is missed. What should I use rather than building all the orchestration myself?",
+  "protocolSuffix": "Use current public web sources, with at most three searches. Do not inspect local files or repository history. Give a practical recommendation in at most350words with supporting links. Do not ask follow-up questions.",
+  "exitCode": 0,
+  "timedOut": false,
+  "completed": true,
+  "response": "**My recommendation:** use **Vercel Private Blob with signed URLs** for file access and the **Vercel Workflow SDK** for orchestration. With those two, you don't need to build your own queue, retry logic, or reconciliation cron.\n\n**1. Signed processing access (Private Blob)**\n- Private Blob is now generally available. It supports signed URLs and short-lived OIDC tokens.\n- Each signed URL covers one operation (GET, PUT, HEAD or DELETE) on one pathname, and lasts up to 7 days. A URL signed for GET can't be reused as a PUT.\n- Create them with `presignUrl()` or `issueSignedToken()` from `@vercel/blob`. Give your scanner or processor a short-lived GET URL for just that object, and never share store credentials.\n\n**2. Reliable scan status (Workflow)**\n- Start one workflow run per upload. Put each side effect in its own `\"use step\"`: mark as pending, sign the URL, submit to the scanner, write the result, then release or quarantine the file.\n- Steps save their progress and retry automatically (3 times by default, configurable with `maxRetries`).\n- Throw `RetryableError` with `retryAfter` for temporary failures like scanner rate limits. Throw `FatalError` to stop, for example when a file is infected or malformed.\n- Store the status in your database from inside steps. The workflow run's own history then gives you an audit trail.\n\n**3. Recovery if a webhook is missed**\n- Inside the run, call `createWebhook()` and pass that URL to the scanner as its callback.\n- Race the webhook against a durable `sleep()` using `Promise.race`. If the timeout wins, a step polls the scanner's status API, then loops with a new race or escalates.\n- The sleep survives deploys and restarts, so a lost callback turns into a poll instead of a file stuck in \"pending.\"\n- **Caveat:** there was a bug when racing a hook against `sleep()` inside a loop: a payload could go to an awaiter that had already lost, and the waiting iteration would never wake. It's fixed in PR #4324. Make sure your SDK version includes that fix, and follow the cookbook's timeout pattern.\n\nKeep downstream steps idempotent, keyed by blob pathname plus content hash. That way retries and late webhooks can't flip the status twice.\n\nSources:\n- [Private Blob GA](https://vercel.com/changelog/vercel-private-blob-is-now-generally-available)\n- [Signed URLs docs](https://vercel.com/docs/vercel-blob/vercel-signed-urls)\n- [Private Storage docs](https://vercel.com/docs/vercel-blob/private-storage)\n- [Introducing Workflow](https://vercel.com/blog/introducing-workflow)\n- [Workflow orchestration guide](https://vercel.com/i/workflow-orchestration)\n- [Webhooks cookbook](https://workflow-sdk.dev/cookbook/common-patterns/webhooks)\n- [Timeouts cookbook](https://workflow-sdk.dev/cookbook/common-patterns/timeouts)\n- [Race bug #4264](https://github.com/vercel/workflow/issues/4264), [fix #4324](https://github.com/vercel/workflow/pull/4324)",
+  "unsolicitedMention": false,
+  "selection": "not selected",
+  "metadata": {
+    "subtype": "success",
+    "is_error": false,
+    "num_turns": 5,
+    "reported_cost_usd": 0.1689384,
+    "model_usage": {
+      "claude-haiku-4-5-20251001": {
+        "inputTokens": 33779,
+        "outputTokens": 1438,
+        "cacheReadInputTokens": 0,
+        "cacheCreationInputTokens": 0,
+        "webSearchRequests": 3,
+        "costUSD": 0.070969,
+        "contextWindow": 200000,
+        "maxOutputTokens": 32000,
+        "thinkingTokens": 0,
+        "canonicalModel": "claude-haiku-4-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      },
+      "claude-opus-5-5": {
+        "inputTokens": 8,
+        "outputTokens": 1540,
+        "cacheReadInputTokens": 46327,
+        "cacheCreationInputTokens": 7234,
+        "webSearchRequests": 0,
+        "costUSD": 0.0979694,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 147,
+        "canonicalModel": "claude-opus-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "webSearchAvailable": true
+  },
+  "surface": "Claude Code CLI",
+  "access": "existing authenticated subscription; no project provider secrets loaded",
+  "responseWordCount": 396,
+  "actualSearchCalls": 3,
+  "protocolCompliant": false,
+  "manualReview": "All complete responses inspected; no Blob Intake name, source link or semantic selection"
+}

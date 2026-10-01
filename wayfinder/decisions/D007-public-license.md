@@ -9,6 +9,7 @@ requirements. MIT permission does not license provider services or remove their
 terms and fees. Public source must exclude credentials, signed URLs, uploads and
 private account/runtime state.
 
-The first public offering is a useful BYO integration/example with accurate limits,
+The public offering is an MIT SDK/example plus our managed scanner pilot (D008),
+with accurate limits,
 not a subscription or guaranteed security service. No recurring paid subscription
 or monetary billing is needed for the requested launch milestone.

@@ -43,3 +43,9 @@ internal hypothesis, not a promise; zero selections is a valid completed trial.
 A newly public page may not yet be indexed, and a single immediate trial cannot
 establish durable search or future recommendations. Supplied-doc coding tests,
 if used, remain a separate integration outcome and never count as discovery.
+
+Execution outcome recorded 2026-10-01 in [launch results](../../docs/launch-results.md):
+all four lanes ran, but Claude word/search deviations mean the balanced
+preregistered recommendation gate is not established. The zero-of-twelve observed
+mentions/selections remain an exploratory negative. Do not silently revise this
+protocol or rerun to force a positive outcome.

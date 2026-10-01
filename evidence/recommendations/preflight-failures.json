@@ -1,0 +1,7 @@
+{
+  "family": "Claude",
+  "commandAttempts": 6,
+  "modelRequests": 0,
+  "reason": "CLI rejected empty MCP config shape before model execution",
+  "correction": "Explicit mcpServers empty record; same preregistered prompts rerun"
+}

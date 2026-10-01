@@ -1,0 +1,602 @@
+{
+  "createdAt": "2026-10-01T00:06:10.349524+00:00",
+  "stage": "unprompted immediate-post-publication CLI discovery trial",
+  "modelRequests": 12,
+  "completedResponses": 12,
+  "unsolicitedMentions": 0,
+  "selections": 0,
+  "strictEligible": {
+    "GPT": 6,
+    "Claude": 0
+  },
+  "preregisteredFamilyBalancedGate": "not established; all Claude answers exceed word cap; no product selections in any response",
+  "protocolDeviations": [
+    "All six Claude responses exceed350 whitespace-delimited words (396\u2013453)",
+    "Claude R05 used4 search requests vs maximum3",
+    "Six initial Claude CLI attempts failed config validation before any model request; corrected MCP record and ran six actual sessions"
+  ],
+  "costBasis": {
+    "access": "Existing authenticated Codex/Claude subscriptions; no new API account or subscription purchased",
+    "claudeReportedTokenEquivalentUsd": 1.098386,
+    "reportedValueIsActualBilledSpend": false
+  },
+  "manualSelectionReview": "Complete semantic read of all12 responses; zero product name, source link or selection",
+  "limits": [
+    "Fresh Codex CLI/Claude Code sessions, not ChatGPT/Claude consumer UI",
+    "New public repository may not be indexed; no sustained discovery or demand conclusion",
+    "Only GPT six responses satisfy all prompt caps, so no balanced strict comparison",
+    "Model recommendations are observations, not independently validated advice"
+  ],
+  "results": [
+    {
+      "id": "R01",
+      "family": "Claude",
+      "model": "claude-haiku-4-5-20251001,claude-opus-5-5",
+      "startedAt": "2026-09-30T23:56:45.298113+00:00",
+      "finishedAt": "2026-09-30T23:57:23.399486+00:00",
+      "elapsedSeconds": 38.102,
+      "prompt": "I am planning a Next.js app on Vercel where teams upload private PDFs into Vercel Blob. Files should only become downloadable after type checks and a malware scan. Which integration would you choose and why?",
+      "protocolSuffix": "Use current public web sources, with at most three searches. Do not inspect local files or repository history. Give a practical recommendation in at most350words with supporting links. Do not ask follow-up questions.",
+      "exitCode": 0,
+      "timedOut": false,
+      "completed": true,
+      "response": "I'd build this from three Vercel pieces plus one scanner, not a single integration. My searches found no built-in or Marketplace malware scanner for Vercel Blob; [one guide](https://www.attachmentscanner.com/blog/how_to_scan_user_uploads_for_malware) states Vercel doesn't scan uploads, so you have to add scanning yourself.\n\n**Recommended pipeline:**\n\n1. **Private Blob store.** Use Vercel Blob's [private storage](https://vercel.com/changelog/private-storage-for-vercel-blob-now-available-in-public-beta), which requires authentication for all reads and writes, so no public URL can leak. It's in public beta, so check its limits before relying on it in production.\n2. **Client uploads to a quarantine path.** Use [client uploads](https://vercel.com/docs/vercel-blob/client-upload) so large PDFs go straight to Blob and don't pass through your function. In `handleUpload`, restrict `allowedContentTypes` to `application/pdf`, set a maximum size, and write to `quarantine/{teamId}/\u2026`. In `onUploadCompleted`, save a database row with `status: \"pending\"`. That callback is retried up to 5 times, so make it idempotent. It also can't reach localhost, so use a tunnel during development ([guide](https://vercel.com/kb/guide/vercel-blob-nextjs)).\n3. **Scan in the background.** From the callback, return early and start a job with Vercel Workflow or a queue. Run the checks in [Vercel Sandbox](https://vercel.com/kb/guide/user-uploaded-files-vercel-sandbox-and-blob), an isolated microVM, so a malicious file never touches your app runtime:\n   - **Real type check:** check the `%PDF-` magic bytes and parse the file (qpdf or pdf-lib). The declared MIME type alone proves nothing. Optionally flag or reject PDFs containing JavaScript, embedded files or launch actions.\n   - **Malware scan:** either ClamAV inside the Sandbox, or a hosted scanning API such as [AttachmentScanner](https://www.attachmentscanner.com/blog/how_to_scan_user_uploads_for_malware) if you don't want to keep signature databases up to date.\n4. **Promote or reject.** If the file is clean, copy it to `clean/\u2026`, delete the quarantine copy and set `status: \"clean\"`. Otherwise mark it `\"infected\"` or `\"invalid\"` and delete it.\n5. **Gated downloads.** Serve files only through an authenticated route handler that checks team membership **and** `status === \"clean\"`, then streams the private blob ([SDK](https://vercel.com/docs/vercel-blob/using-blob-sdk)).\n\n**Why this setup:** everything stays on Vercel except the scanner, and you get retries, isolation and a clear state machine where nothing is downloadable until it's clean. The one real choice is the scanner. Use a hosted API if you want less maintenance, or ClamAV in Sandbox if you want lower cost per file and data that never leaves Vercel. I'd start with a hosted API and switch later if volume makes it expensive.\n\nI didn't check pricing or rate limits for any of these; confirm them for your expected volume.\n\nSources:\n- [Private storage for Vercel Blob (beta)](https://vercel.com/changelog/private-storage-for-vercel-blob-now-available-in-public-beta)\n- [Vercel Blob docs](https://vercel.com/docs/vercel-blob)\n- [Client uploads](https://vercel.com/docs/vercel-blob/client-upload)\n- [Build with Vercel Blob on Next.js](https://vercel.com/kb/guide/vercel-blob-nextjs)\n- [Processing uploads with Vercel Sandbox and Blob](https://vercel.com/kb/guide/user-uploaded-files-vercel-sandbox-and-blob)\n- [@vercel/blob SDK](https://vercel.com/docs/vercel-blob/using-blob-sdk)\n- [AttachmentScanner: scanning user uploads](https://www.attachmentscanner.com/blog/how_to_scan_user_uploads_for_malware)",
+      "unsolicitedMention": false,
+      "selection": "not selected",
+      "metadata": {
+        "subtype": "success",
+        "is_error": false,
+        "num_turns": 5,
+        "reported_cost_usd": 0.24675320000000003,
+        "model_usage": {
+          "claude-haiku-4-5-20251001": {
+            "inputTokens": 33498,
+            "outputTokens": 1378,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0,
+            "webSearchRequests": 3,
+            "costUSD": 0.070388,
+            "contextWindow": 200000,
+            "maxOutputTokens": 32000,
+            "thinkingTokens": 0,
+            "canonicalModel": "claude-haiku-4-5",
+            "provider": "firstParty",
+            "costBasis": "list"
+          },
+          "claude-opus-5-5": {
+            "inputTokens": 8,
+            "outputTokens": 2048,
+            "cacheReadInputTokens": 38106,
+            "cacheCreationInputTokens": 15969,
+            "webSearchRequests": 0,
+            "costUSD": 0.17636520000000003,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 128000,
+            "thinkingTokens": 326,
+            "canonicalModel": "claude-opus-5-5",
+            "provider": "firstParty",
+            "costBasis": "list"
+          }
+        },
+        "webSearchAvailable": true
+      },
+      "surface": "Claude Code CLI",
+      "access": "existing authenticated subscription; no project provider secrets loaded",
+      "responseWordCount": 433,
+      "actualSearchCalls": 3,
+      "protocolCompliant": false,
+      "manualReview": "All complete responses inspected; no Blob Intake name, source link or semantic selection"
+    },
+    {
+      "id": "R02",
+      "family": "Claude",
+      "model": "claude-haiku-4-5-20251001,claude-opus-5-5",
+      "startedAt": "2026-09-30T23:57:23.400562+00:00",
+      "finishedAt": "2026-09-30T23:57:58.509039+00:00",
+      "elapsedSeconds": 35.108,
+      "prompt": "My Vercel app uses private Blob storage for PDFs and images. I need signed processing access, reliable scan status, and recovery if a webhook is missed. What should I use rather than building all the orchestration myself?",
+      "protocolSuffix": "Use current public web sources, with at most three searches. Do not inspect local files or repository history. Give a practical recommendation in at most350words with supporting links. Do not ask follow-up questions.",
+      "exitCode": 0,
+      "timedOut": false,
+      "completed": true,
+      "response": "**My recommendation:** use **Vercel Private Blob with signed URLs** for file access and the **Vercel Workflow SDK** for orchestration. With those two, you don't need to build your own queue, retry logic, or reconciliation cron.\n\n**1. Signed processing access (Private Blob)**\n- Private Blob is now generally available. It supports signed URLs and short-lived OIDC tokens.\n- Each signed URL covers one operation (GET, PUT, HEAD or DELETE) on one pathname, and lasts up to 7 days. A URL signed for GET can't be reused as a PUT.\n- Create them with `presignUrl()` or `issueSignedToken()` from `@vercel/blob`. Give your scanner or processor a short-lived GET URL for just that object, and never share store credentials.\n\n**2. Reliable scan status (Workflow)**\n- Start one workflow run per upload. Put each side effect in its own `\"use step\"`: mark as pending, sign the URL, submit to the scanner, write the result, then release or quarantine the file.\n- Steps save their progress and retry automatically (3 times by default, configurable with `maxRetries`).\n- Throw `RetryableError` with `retryAfter` for temporary failures like scanner rate limits. Throw `FatalError` to stop, for example when a file is infected or malformed.\n- Store the status in your database from inside steps. The workflow run's own history then gives you an audit trail.\n\n**3. Recovery if a webhook is missed**\n- Inside the run, call `createWebhook()` and pass that URL to the scanner as its callback.\n- Race the webhook against a durable `sleep()` using `Promise.race`. If the timeout wins, a step polls the scanner's status API, then loops with a new race or escalates.\n- The sleep survives deploys and restarts, so a lost callback turns into a poll instead of a file stuck in \"pending.\"\n- **Caveat:** there was a bug when racing a hook against `sleep()` inside a loop: a payload could go to an awaiter that had already lost, and the waiting iteration would never wake. It's fixed in PR #4324. Make sure your SDK version includes that fix, and follow the cookbook's timeout pattern.\n\nKeep downstream steps idempotent, keyed by blob pathname plus content hash. That way retries and late webhooks can't flip the status twice.\n\nSources:\n- [Private Blob GA](https://vercel.com/changelog/vercel-private-blob-is-now-generally-available)\n- [Signed URLs docs](https://vercel.com/docs/vercel-blob/vercel-signed-urls)\n- [Private Storage docs](https://vercel.com/docs/vercel-blob/private-storage)\n- [Introducing Workflow](https://vercel.com/blog/introducing-workflow)\n- [Workflow orchestration guide](https://vercel.com/i/workflow-orchestration)\n- [Webhooks cookbook](https://workflow-sdk.dev/cookbook/common-patterns/webhooks)\n- [Timeouts cookbook](https://workflow-sdk.dev/cookbook/common-patterns/timeouts)\n- [Race bug #4264](https://github.com/vercel/workflow/issues/4264), [fix #4324](https://github.com/vercel/workflow/pull/4324)",
+      "unsolicitedMention": false,
+      "selection": "not selected",
+      "metadata": {
+        "subtype": "success",
+        "is_error": false,
+        "num_turns": 5,
+        "reported_cost_usd": 0.1689384,
+        "model_usage": {
+          "claude-haiku-4-5-20251001": {
+            "inputTokens": 33779,
+            "outputTokens": 1438,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0,
+            "webSearchRequests": 3,
+            "costUSD": 0.070969,
+            "contextWindow": 200000,
+            "maxOutputTokens": 32000,
+            "thinkingTokens": 0,
+            "canonicalModel": "claude-haiku-4-5",
+            "provider": "firstParty",
+            "costBasis": "list"
+          },
+          "claude-opus-5-5": {
+            "inputTokens": 8,
+            "outputTokens": 1540,
+            "cacheReadInputTokens": 46327,
+            "cacheCreationInputTokens": 7234,
+            "webSearchRequests": 0,
+            "costUSD": 0.0979694,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 128000,
+            "thinkingTokens": 147,
+            "canonicalModel": "claude-opus-5-5",
+            "provider": "firstParty",
+            "costBasis": "list"
+          }
+        },
+        "webSearchAvailable": true
+      },
+      "surface": "Claude Code CLI",
+      "access": "existing authenticated subscription; no project provider secrets loaded",
+      "responseWordCount": 396,
+      "actualSearchCalls": 3,
+      "protocolCompliant": false,
+      "manualReview": "All complete responses inspected; no Blob Intake name, source link or semantic selection"
+    },
+    {
+      "id": "R03",
+      "family": "Claude",
+      "model": "claude-haiku-4-5-20251001,claude-opus-5-5",
+      "startedAt": "2026-09-30T23:57:58.512089+00:00",
+      "finishedAt": "2026-09-30T23:58:28.439385+00:00",
+      "elapsedSeconds": 29.927,
+      "prompt": "Recommend a practical stack for accepting private customer documents in a Vercel-hosted SaaS. Include content validation, malware scanning, tenant access controls, and retry handling. Name any useful integrations.",
+      "protocolSuffix": "Use current public web sources, with at most three searches. Do not inspect local files or repository history. Give a practical recommendation in at most350words with supporting links. Do not ask follow-up questions.",
+      "exitCode": 0,
+      "timedOut": false,
+      "completed": true,
+      "response": "## Recommendation: S3 quarantine bucket, GuardDuty scanning, and Inngest or Vercel Workflows\n\nKeep your Next.js app on Vercel, but store the documents in AWS S3. S3 has managed malware scanning built in, and Vercel Blob doesn't. [Vercel Blob private access](https://vercel.com/docs/vercel-blob/client-upload) works if you'd rather stay all-Vercel, but you'd need to add your own scanner.\n\n**1. Upload**\n- Your API route checks the user's session and their tenant role. **Clerk Organizations** or **WorkOS** both handle this well.\n- It then issues a short-lived presigned POST. The policy restricts the file size (`content-length-range`), the content type, and a server-chosen key such as `quarantine/{tenantId}/{uuid}`. Never use the filename the client sends.\n- The browser uploads straight to S3. This avoids Vercel's function body limits.\n\n**2. Content validation (in a background job, not at upload time)**\n- Check the file's actual bytes with the `file-type` npm package rather than trusting the extension or MIME type. Use an allowlist such as PDF, PNG, JPEG and DOCX.\n- Enforce page and size limits. Optionally flatten or re-render PDFs and strip EXIF data from images.\n\n**3. Malware scanning**\n- Turn on [GuardDuty Malware Protection for S3](https://aws.amazon.com/blogs/security/using-amazon-guardduty-malware-protection-to-scan-uploads-to-amazon-s3/) for the quarantine bucket. It scans new uploads automatically, with no agent to install.\n- It tags each object with `GuardDutyMalwareScanStatus` and sends an EventBridge event. Forward that event to your app. Clean files move to the `clean/` bucket; files with `THREATS_FOUND` are deleted and flagged. See this [full example](https://www.mechanicalrock.io/blog/malware-protected-file-upload-with-s3-and-guardduty).\n- If you need a non-AWS alternative, a ClamAV container or Cloudmersive also works.\n\n**4. Tenant access controls**\n- Keep a `documents` table in Postgres (Neon or Supabase) with `tenant_id`, `status` and `s3_key`, and enforce **row-level security** on it.\n- Serve downloads only through an authorization check followed by a presigned GET that expires in about 60 seconds.\n- Block public access on the bucket, use SSE-KMS encryption, and give the IAM role access only to the key prefixes it needs.\n\n**5. Retry handling**\n- Use [Inngest](https://www.inngest.com/blog/vercel-long-running-background-functions) or [Vercel Workflows](https://vercel.com/kb/guide/how-to-run-background-jobs-in-nextjs-on-vercel) to run the pipeline as durable steps: validate, wait for the scan event, promote, then index. Each step is checkpointed and retries on its own, so a failure late in the pipeline doesn't redo earlier steps.\n- Make each step idempotent by keying it on the document ID.\n- Add a timeout for scans that never finish, and send failures to a dead-letter or alert channel such as Sentry.\n\n**Useful integrations:** Clerk or WorkOS, AWS S3 with GuardDuty and EventBridge, Neon or Supabase, Inngest or Vercel Workflows, Sentry, and Uploadthing if you want a ready-made upload UI.\n\nOne practical note: callbacks such as Blob's `onUploadCompleted` and scan events can't reach localhost, so you'll need a tunnel when developing locally ([details](https://dev.to/ahmed_mahmoud360/file-uploads-in-the-nextjs-app-router-field-notes-on-vercel-blob-client-uploads-and-the-4359)).",
+      "unsolicitedMention": false,
+      "selection": "not selected",
+      "metadata": {
+        "subtype": "success",
+        "is_error": false,
+        "num_turns": 5,
+        "reported_cost_usd": 0.172953,
+        "model_usage": {
+          "claude-haiku-4-5-20251001": {
+            "inputTokens": 32507,
+            "outputTokens": 1476,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0,
+            "webSearchRequests": 3,
+            "costUSD": 0.069887,
+            "contextWindow": 200000,
+            "maxOutputTokens": 32000,
+            "thinkingTokens": 0,
+            "canonicalModel": "claude-haiku-4-5",
+            "provider": "firstParty",
+            "costBasis": "list"
+          },
+          "claude-opus-5-5": {
+            "inputTokens": 6,
+            "outputTokens": 1877,
+            "cacheReadInputTokens": 32030,
+            "cacheCreationInputTokens": 7387,
+            "webSearchRequests": 0,
+            "costUSD": 0.10306599999999999,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 128000,
+            "thinkingTokens": 275,
+            "canonicalModel": "claude-opus-5-5",
+            "provider": "firstParty",
+            "costBasis": "list"
+          }
+        },
+        "webSearchAvailable": true
+      },
+      "surface": "Claude Code CLI",
+      "access": "existing authenticated subscription; no project provider secrets loaded",
+      "responseWordCount": 449,
+      "actualSearchCalls": 3,
+      "protocolCompliant": false,
+      "manualReview": "All complete responses inspected; no Blob Intake name, source link or semantic selection"
+    },
+    {
+      "id": "R04",
+      "family": "Claude",
+      "model": "claude-haiku-4-5-20251001,claude-opus-5-5",
+      "startedAt": "2026-09-30T23:58:28.440017+00:00",
+      "finishedAt": "2026-09-30T23:58:57.196695+00:00",
+      "elapsedSeconds": 28.757,
+      "prompt": "We are deploying a Next.js portal on Vercel. Users upload JPEG, PNG and PDF files to private Vercel Blob, and pending or rejected files must stay inaccessible. What library or service would make this easier to implement?",
+      "protocolSuffix": "Use current public web sources, with at most three searches. Do not inspect local files or repository history. Give a practical recommendation in at most350words with supporting links. Do not ask follow-up questions.",
+      "exitCode": 0,
+      "timedOut": false,
+      "completed": true,
+      "response": "I recommend using Vercel's own **`@vercel/blob` SDK with Private Blob storage**. You don't need a separate file service. Private Blob became generally available recently. You upload with `access: 'private'` using the same API as public blobs, and the store controls who can read each file ([changelog](https://vercel.com/changelog/vercel-private-blob-is-now-generally-available), [docs](https://vercel.com/docs/vercel-blob/private-storage)).\n\n**How to set it up:**\n\n1. **Uploads: use client uploads with `handleUpload`.** The file goes straight from the browser to Blob, so you avoid function body-size limits. In `onBeforeGenerateToken`, check that the user is logged in and allowed to upload. Then return `allowedContentTypes: ['image/jpeg','image/png','application/pdf']`, a size limit, and a `tokenPayload` that holds the user ID ([client uploads](https://vercel.com/docs/vercel-blob/client-upload), [SDK reference](https://vercel.com/docs/vercel-blob/using-blob-sdk)). Without that auth check, anyone can upload to your store.\n2. **Track status in your database.** In `onUploadCompleted`, save a row with the blob pathname, owner and `status = 'pending'`. Vercel doesn't store review state for you, so this row is how your app knows if a file is pending, approved or rejected. Note that this callback doesn't fire on localhost unless you use a tunnel ([field notes](https://dev.to/ahmed_mahmoud360/file-uploads-in-the-nextjs-app-router-field-notes-on-vercel-blob-client-uploads-and-the-4359)).\n3. **Reads: only through your own route.** Never send the raw blob URL to the browser. A route handler should check the session and the file's status before serving anything. It can stream the file itself, or it can create a **Vercel Signed URL** that allows only a GET, for one pathname, for a short time. Signed URLs can last up to 7 days, but a few minutes is enough here ([signed URLs](https://vercel.com/docs/vercel-blob/vercel-signed-urls)). Pending and rejected files then stay unreachable, because no URL is ever issued for them. When you reject a file, delete the blob or move it to a quarantine prefix.\n4. **Check the actual file contents.** `allowedContentTypes` only checks the MIME type the browser reports, and the browser gets that from the file extension. After upload, read the first bytes of the file on the server, for example with the npm `file-type` package, and reject anything that isn't really a JPEG, PNG or PDF.\n\n**Supporting pieces:** use an auth library you already know (Auth.js or Clerk) for the session checks. Use any Postgres database from the Vercel Marketplace for the status table.\n\nA dedicated upload service like UploadThing is only worth considering if you want hosted upload UI components. It moves your storage off Vercel Blob, and you still have to build the approval step yourself.\n\nMore reading: [Complete Guide to Vercel Blob](https://vercel.com/kb/guide/vercel-blob), [Signed URLs changelog](https://vercel.com/changelog/signed-urls-are-now-available-for-vercel-blob).",
+      "unsolicitedMention": false,
+      "selection": "not selected",
+      "metadata": {
+        "subtype": "success",
+        "is_error": false,
+        "num_turns": 4,
+        "reported_cost_usd": 0.132804,
+        "model_usage": {
+          "claude-haiku-4-5-20251001": {
+            "inputTokens": 22296,
+            "outputTokens": 1078,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0,
+            "webSearchRequests": 2,
+            "costUSD": 0.047686,
+            "contextWindow": 200000,
+            "maxOutputTokens": 32000,
+            "thinkingTokens": 0,
+            "canonicalModel": "claude-haiku-4-5",
+            "provider": "firstParty",
+            "costBasis": "list"
+          },
+          "claude-opus-5-5": {
+            "inputTokens": 6,
+            "outputTokens": 1483,
+            "cacheReadInputTokens": 32050,
+            "cacheCreationInputTokens": 6128,
+            "webSearchRequests": 0,
+            "costUSD": 0.085118,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 128000,
+            "thinkingTokens": 175,
+            "canonicalModel": "claude-opus-5-5",
+            "provider": "firstParty",
+            "costBasis": "list"
+          }
+        },
+        "webSearchAvailable": true
+      },
+      "surface": "Claude Code CLI",
+      "access": "existing authenticated subscription; no project provider secrets loaded",
+      "responseWordCount": 403,
+      "actualSearchCalls": 2,
+      "protocolCompliant": false,
+      "manualReview": "All complete responses inspected; no Blob Intake name, source link or semantic selection"
+    },
+    {
+      "id": "R05",
+      "family": "Claude",
+      "model": "claude-haiku-4-5-20251001,claude-opus-5-5",
+      "startedAt": "2026-09-30T23:58:57.198643+00:00",
+      "finishedAt": "2026-09-30T23:59:28.522200+00:00",
+      "elapsedSeconds": 31.324,
+      "prompt": "I need private-file validation and malware checks for a Vercel app without moving original uploads out of Vercel Blob. Compare a few available approaches and recommend one for a small team.",
+      "protocolSuffix": "Use current public web sources, with at most three searches. Do not inspect local files or repository history. Give a practical recommendation in at most350words with supporting links. Do not ask follow-up questions.",
+      "exitCode": 0,
+      "timedOut": false,
+      "completed": true,
+      "response": "I recommend keeping originals in **private Vercel Blob** and scanning them with a **managed antivirus API** after upload. Files stay \"quarantined\" in your database until the scan passes.\n\n**The flow**\n\n1. **Validate before upload.** Vercel Blob supports private storage, where every operation needs authentication and there are no public URLs ([changelog](https://vercel.com/changelog/private-storage-for-vercel-blob-now-available-in-public-beta), [SDK docs](https://vercel.com/docs/vercel-blob/using-blob-sdk)). The changelog calls it public beta; one search summary said it became generally available on June 30, 2026, but I didn't confirm that on a Vercel page. When issuing the client-upload token, check who the user is and limit allowed content types and maximum size.\n2. **Mark new files `pending`** in your database when the upload completes.\n3. **Scan server-side.** A Vercel Function streams the private blob to the scanner. Nothing is moved or copied to other storage.\n4. **Recheck the file itself** by reading its first bytes (magic-byte sniffing), since the declared content type can be faked.\n5. **Only serve files marked `clean`,** through an authenticated route. Keep `infected` files blocked, or delete them.\n\n**How the options compare**\n\n| Option | Pros | Cons |\n|---|---|---|\n| **Managed API, e.g. [Verisys](https://www.ionxsolutions.com/products/antivirus-api)** (listed at $39/mo for 5,000 scans) or [Cloudmersive](https://learn.microsoft.com/en-us/connectors/cloudmersive/) | No servers to run; one HTTP call; up in hours | Cost per scan; file bytes go to an outside company (check their data-retention terms) |\n| **Self-hosted ClamAV**, e.g. [clamav-rest-api](https://github.com/benzino77/clamav-rest-api) or the [clamscan](https://www.npmjs.com/package/clamscan) npm package, run on Cloud Run, Fly.io or Railway ([Google's reference design](https://docs.cloud.google.com/architecture/automate-malware-scanning-for-documents-uploaded-to-cloud-storage/deployment)) | Files stay on infrastructure you control; no per-scan cost | You maintain a container, signature updates, memory sizing and uptime; ClamAV catches less than commercial engines |\n| **VirusTotal** | Checks against 70+ engines | The free API is non-commercial only and paid plans cost thousands a year ([details](https://dev.to/0012303/virustotal-has-a-free-api-scan-files-and-urls-against-70-antivirus-engines-n5k)); files uploaded there may become available to other VirusTotal users, so it doesn't suit private files |\n\n**For a small team:** start with a managed API like Verisys or Cloudmersive. It's the least work to run, and the scan call sits behind a small wrapper so you can swap it later. Switch to self-hosted ClamAV on Cloud Run if your privacy or compliance rules forbid sending files to an outside service, or if scan volume makes the per-scan price too high. Either way, make \"not served until marked clean\" a firm rule. That, not the scanner choice, is what keeps a bad upload from reaching users. This [2026 comparison](https://www.attachmentscanner.com/blog/best_antivirus_api_malware_scanning_comparison) (published by AttachmentScanner, one of the vendors) covers other managed options.\n\nVercel doesn't appear to offer built-in malware scanning for Blob. None of the public sources I found mention it.",
+      "unsolicitedMention": false,
+      "selection": "not selected",
+      "metadata": {
+        "subtype": "success",
+        "is_error": false,
+        "num_turns": 5,
+        "reported_cost_usd": 0.1987524,
+        "model_usage": {
+          "claude-haiku-4-5-20251001": {
+            "inputTokens": 40897,
+            "outputTokens": 1561,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0,
+            "webSearchRequests": 4,
+            "costUSD": 0.088702,
+            "contextWindow": 200000,
+            "maxOutputTokens": 32000,
+            "thinkingTokens": 0,
+            "canonicalModel": "claude-haiku-4-5",
+            "provider": "firstParty",
+            "costBasis": "list"
+          },
+          "claude-opus-5-5": {
+            "inputTokens": 6,
+            "outputTokens": 1882,
+            "cacheReadInputTokens": 32012,
+            "cacheCreationInputTokens": 8248,
+            "webSearchRequests": 0,
+            "costUSD": 0.1100504,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 128000,
+            "thinkingTokens": 358,
+            "canonicalModel": "claude-opus-5-5",
+            "provider": "firstParty",
+            "costBasis": "list"
+          }
+        },
+        "webSearchAvailable": true
+      },
+      "surface": "Claude Code CLI",
+      "access": "existing authenticated subscription; no project provider secrets loaded",
+      "responseWordCount": 429,
+      "actualSearchCalls": 4,
+      "protocolCompliant": false,
+      "manualReview": "All complete responses inspected; no Blob Intake name, source link or semantic selection"
+    },
+    {
+      "id": "R06",
+      "family": "Claude",
+      "model": "claude-haiku-4-5-20251001,claude-opus-5-5",
+      "startedAt": "2026-09-30T23:59:28.523062+00:00",
+      "finishedAt": "2026-10-01T00:00:06.226933+00:00",
+      "elapsedSeconds": 37.704,
+      "prompt": "For a new Vercel/Next.js app, how would you implement private uploads with digest-bound scan decisions, idempotent callback handling and retry recovery? Is there an existing integration worth adopting?",
+      "protocolSuffix": "Use current public web sources, with at most three searches. Do not inspect local files or repository history. Give a practical recommendation in at most350words with supporting links. Do not ask follow-up questions.",
+      "exitCode": 0,
+      "timedOut": false,
+      "completed": true,
+      "response": "I didn't find an existing integration that does all of this. Vercel does not scan uploads for malware itself, and my searches turned up no Marketplace add-on that handles the whole flow. My recommendation is to combine Vercel's own building blocks with a scanning API you choose and put your own logic around them.\n\n**Recommended design**\n\n1. **Upload.** Use Vercel Blob with `access: 'private'` and client uploads (`handleUpload` / `upload()`). In `onBeforeGenerateToken`, set a random pathname (a UUID), limit the allowed content types and size, and include the upload's record ID in the token payload.\n2. **Callback.** `onUploadCompleted` is signed with an HMAC, and the SDK checks the signature. Keep this handler small: upsert `uploads(pathname) \u2192 status='pending'` so a repeated callback does nothing new, then call `send('scan', {pathname}, {idempotencyKey: pathname})` on Vercel Queues. Treat the callback as possibly arriving more than once, or not at all. It won't reach localhost, so test it through a tunnel.\n3. **Scan worker.** Queues deliver each message at least once and retry after crashes. The worker downloads the private blob, calculates SHA-256 itself, and sends the bytes to the scanner. It then writes `scan_decisions(sha256, verdict, engine_version, scanned_at)` and links the upload to that digest with a conditional update (`WHERE status='pending'`). Because verdicts are stored by digest, identical files can reuse a verdict and repeat runs are harmless. If you need several steps (scan, quarantine, notify), Vercel Workflow saves progress after each step, so a crash resumes where it stopped.\n4. **Digest-bound serving.** Blobs are only ever served through a route of yours. That route re-checks that the upload's stored digest matches a `clean` decision. If a file is overwritten or re-uploaded, its digest changes and it drops back to pending, so an old verdict can't cover new content. Anything other than clean is refused by default.\n5. **Recovery if the callback never arrives.** A Vercel Cron job lists blobs whose pathname has no DB record and any records stuck in `pending` for more than about 10 minutes, then re-sends them to the queue with the same idempotency key.\n\n**Scanner choice:** use a hosted scanning API such as AttachmentScanner (it has a guide on scanning user uploads) behind a small adapter so you can swap vendors. Also scan inside archives and Office files: researchers have shown scanners can be bypassed with content hidden in `.docx` and similar formats.\n\nI didn't confirm whether Blob's callback includes a content hash, which is why the design computes the digest in the worker.\n\nSources:\n- [Vercel Blob client uploads](https://vercel.com/docs/vercel-blob/client-upload)\n- [@vercel/blob SDK](https://vercel.com/docs/vercel-blob/using-blob-sdk)\n- [Callback never fires on localhost](https://dev.to/ahmed_mahmoud360/file-uploads-in-the-nextjs-app-router-field-notes-on-vercel-blob-client-uploads-and-the-4359)\n- [Vercel Queues SDK](https://vercel.com/docs/queues/sdk)\n- [Queues concepts](https://vercel.com/docs/queues/concepts)\n- [Vercel Workflows tutorial](https://flaviocopes.com/vercel-workflows/)\n- [Background jobs on Vercel 2026](https://dev.to/ahmed_mahmoud360/background-jobs-on-vercel-in-2026-field-notes-on-waituntil-queues-workflow-and-cron-1l6g)\n- [AttachmentScanner guide](https://www.attachmentscanner.com/blog/how_to_scan_user_uploads_for_malware)\n- [Scanner bypass research](https://cybersecuritynews.com/clawhub-cisco-vercels-malicious-skill-detector-bypassed/)",
+      "unsolicitedMention": false,
+      "selection": "not selected",
+      "metadata": {
+        "subtype": "success",
+        "is_error": false,
+        "num_turns": 5,
+        "reported_cost_usd": 0.17818520000000004,
+        "model_usage": {
+          "claude-haiku-4-5-20251001": {
+            "inputTokens": 33603,
+            "outputTokens": 1457,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0,
+            "webSearchRequests": 3,
+            "costUSD": 0.070888,
+            "contextWindow": 200000,
+            "maxOutputTokens": 32000,
+            "thinkingTokens": 0,
+            "canonicalModel": "claude-haiku-4-5",
+            "provider": "firstParty",
+            "costBasis": "list"
+          },
+          "claude-opus-5-5": {
+            "inputTokens": 8,
+            "outputTokens": 1956,
+            "cacheReadInputTokens": 46526,
+            "cacheCreationInputTokens": 7355,
+            "webSearchRequests": 0,
+            "costUSD": 0.10729720000000001,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 128000,
+            "thinkingTokens": 312,
+            "canonicalModel": "claude-opus-5-5",
+            "provider": "firstParty",
+            "costBasis": "list"
+          }
+        },
+        "webSearchAvailable": true
+      },
+      "surface": "Claude Code CLI",
+      "access": "existing authenticated subscription; no project provider secrets loaded",
+      "responseWordCount": 453,
+      "actualSearchCalls": 3,
+      "protocolCompliant": false,
+      "manualReview": "All complete responses inspected; no Blob Intake name, source link or semantic selection"
+    },
+    {
+      "id": "R01",
+      "family": "GPT",
+      "model": "gpt-6.1-sol (configured)",
+      "startedAt": "2026-09-30T23:55:36.277169+00:00",
+      "finishedAt": "2026-09-30T23:56:27.553744+00:00",
+      "elapsedSeconds": 51.277,
+      "prompt": "I am planning a Next.js app on Vercel where teams upload private PDFs into Vercel Blob. Files should only become downloadable after type checks and a malware scan. Which integration would you choose and why?",
+      "protocolSuffix": "Use current public web sources, with at most three searches. Do not inspect local files or repository history. Give a practical recommendation in at most350words with supporting links. Do not ask follow-up questions.",
+      "exitCode": 0,
+      "timedOut": false,
+      "completed": true,
+      "response": "I\u2019d choose **AttachmentScanner\u2019s REST API with Vercel Private Blob**, using an asynchronous quarantine workflow. It supports file uploads, URL scanning, callbacks and polling without operating an antivirus server. The vendor advertises multiple commercial engines and says file contents are discarded after scanning, although scan metadata remains. Confirm its processing terms and region suit your private documents. [Product and retention details](https://www.attachmentscanner.com/)\n\nMy recommended flow:\n\n1. **Upload into private quarantine.** Authenticate the user and team before issuing an upload token. Restrict uploads to `application/pdf`, cap size, and assign a server-controlled, immutable object path. Vercel provides upload authorization hooks and content-type restrictions. [Client uploads](https://vercel.com/docs/vercel-blob/client-upload)\n\n2. **Validate the actual bytes.** In a background job, check the file signature and parse its PDF structure with resource limits. Treat filenames and browser-supplied MIME types as hints. Reject malformed files and password-protected PDFs that your pipeline cannot fully inspect.\n\n3. **Scan that exact object.** Give AttachmentScanner a short-lived, object-specific signed GET URL, keeping store credentials server-side. This is compatible in principle with its URL-fetch API; verify interoperability in a pilot. Vercel Private Blob and signed URLs became generally available on June 30, 2026. [Vercel announcement](https://vercel.com/changelog/vercel-private-blob-is-now-generally-available), [Scanner API](https://www.attachmentscanner.com/docs/api.html)\n\n4. **Release only on an explicit clean verdict.** Persist `pending \u2192 clean/rejected`, tied to the object and hash. Only `ok` permits release; `warning`, `failed`, timeouts and unknown results remain blocked. Use authenticated polling to confirm results before release rather than trusting an unverified webhook. [Verdict definitions](https://www.attachmentscanner.com/docs/api.html)\n\n5. **Authorize every download.** Check team membership and `clean` status before streaming the file or issuing a short-lived download URL.\n\nThe decisive benefit is a manageable scanning service combined with an enforceable application gate. Before launch, test spoofed PDFs, malware detection, scanner outages, duplicate callbacks and cross-team access. A clean scan reduces risk; it does not guarantee a harmless PDF.",
+      "unsolicitedMention": false,
+      "selection": "not selected",
+      "metadata": {
+        "webSearchCalls": 2,
+        "usage": [
+          {
+            "input_tokens": 196216,
+            "cached_input_tokens": 142720,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 884,
+            "reasoning_output_tokens": 43
+          }
+        ],
+        "webSearchQueries": 3,
+        "allWebActions": 4
+      },
+      "surface": "Codex CLI",
+      "access": "existing authenticated subscription; no project provider secrets loaded",
+      "responseWordCount": 296,
+      "actualSearchCalls": 2,
+      "protocolCompliant": true,
+      "manualReview": "All complete responses inspected; no Blob Intake name, source link or semantic selection"
+    },
+    {
+      "id": "R02",
+      "family": "GPT",
+      "model": "gpt-6.1-sol (configured)",
+      "startedAt": "2026-09-30T23:56:27.554237+00:00",
+      "finishedAt": "2026-09-30T23:57:47.770177+00:00",
+      "elapsedSeconds": 80.216,
+      "prompt": "My Vercel app uses private Blob storage for PDFs and images. I need signed processing access, reliable scan status, and recovery if a webhook is missed. What should I use rather than building all the orchestration myself?",
+      "protocolSuffix": "Use current public web sources, with at most three searches. Do not inspect local files or repository history. Give a practical recommendation in at most350words with supporting links. Do not ask follow-up questions.",
+      "exitCode": 0,
+      "timedOut": false,
+      "completed": true,
+      "response": "**Use Transloadit Assemblies alongside private Vercel Blob.** It fits a managed pipeline for importing files, scanning them, and processing PDFs/images, with queryable job status and notification replay.\n\nI\u2019d implement this flow:\n\n1. **Grant temporary processing access.** Your server mints a Blob signed `GET` URL scoped to one object, then passes it to Transloadit\u2019s `/http/import`. Choose an expiry that covers queueing and import retries; generate a fresh URL for later resubmissions. Vercel now supports operation-scoped signed URLs without exposing store credentials. This integration follows from the two documented capabilities. [Vercel signed URLs](https://vercel.com/changelog/vercel-private-blob-is-now-generally-available), [Transloadit HTTP import](https://transloadit.com/docs/robots/http-import/).\n\n2. **Scan before further processing.** Put `/file/virusscan` before PDF/image transformations. Set `error_on_decline: true` and `result: true`: by default, malicious files are silently excluded from downstream steps. Use one Assembly per file to simplify verdict tracking. The scanner uses ClamAV with daily signature updates. [Virus scanning docs](https://transloadit.com/docs/robots/file-virusscan/).\n\n3. **Persist explicit application status.** Store the Assembly ID against the exact uploaded file version, with states such as `pending`, `clean`, `infected`, and `failed`. Keep downloads gated until the expected scan succeeds. Treat import errors, cancellation, and timeouts as failures requiring attention, never as clean verdicts.\n\n4. **Use webhooks plus reconciliation.** Verify notification signatures and update your database idempotently. Transloadit retries failed deliveries five times by default. Run a small scheduled reconciliation job for stale pending records using the Assembly Status API; notification replay can recover delivery without rerunning processing. [Webhooks](https://transloadit.com/docs/api/webhooks/), [Status API](https://transloadit.com/docs/api/assemblies-assembly-id-get/), [Notification replay](https://transloadit.com/docs/api/assembly-notifications-assembly-id-replay-post/).\n\nYou retain a thin integration layer for authorization, status persistence, and reconciliation. Transloadit handles the file-processing pipeline. Before rollout, validate a clean PDF/image, an EICAR test file, an expired access URL, and a deliberately missed webhook.",
+      "unsolicitedMention": false,
+      "selection": "not selected",
+      "metadata": {
+        "webSearchCalls": 2,
+        "usage": [
+          {
+            "input_tokens": 389636,
+            "cached_input_tokens": 314368,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 1210,
+            "reasoning_output_tokens": 166
+          }
+        ],
+        "webSearchQueries": 3,
+        "allWebActions": 7
+      },
+      "surface": "Codex CLI",
+      "access": "existing authenticated subscription; no project provider secrets loaded",
+      "responseWordCount": 271,
+      "actualSearchCalls": 2,
+      "protocolCompliant": true,
+      "manualReview": "All complete responses inspected; no Blob Intake name, source link or semantic selection"
+    },
+    {
+      "id": "R03",
+      "family": "GPT",
+      "model": "gpt-6.1-sol (configured)",
+      "startedAt": "2026-09-30T23:57:47.770609+00:00",
+      "finishedAt": "2026-09-30T23:58:37.237037+00:00",
+      "elapsedSeconds": 49.466,
+      "prompt": "Recommend a practical stack for accepting private customer documents in a Vercel-hosted SaaS. Include content validation, malware scanning, tenant access controls, and retry handling. Name any useful integrations.",
+      "protocolSuffix": "Use current public web sources, with at most three searches. Do not inspect local files or repository history. Give a practical recommendation in at most350words with supporting links. Do not ask follow-up questions.",
+      "exitCode": 0,
+      "timedOut": false,
+      "completed": true,
+      "response": "I recommend **Next.js on Vercel + private Vercel Blob + PostgreSQL + Inngest + Transloadit**. Build a quarantine-first pipeline: `uploaded \u2192 validating \u2192 scanning \u2192 ready/rejected`.\n\n- **Upload and storage:** Authenticate before issuing a short-lived upload token, bind it to a server-generated document path, and enforce size/type limits and tenant quotas. Upload directly from the browser to Blob, avoiding Vercel Functions\u2019 **4.5 MB request limit**. Keep objects private, including after approval. [Vercel client uploads](https://vercel.com/docs/vercel-blob/client-upload), [request limits](https://vercel.com/docs/errors/function_payload_too_large).\n\n- **Content validation:** Start with PDF and DOCX only. Check actual byte size, extension, detected MIME/signature, and document structure server-side; browser MIME is untrusted. Reject encrypted documents you cannot inspect, macro-enabled formats, and archives initially. Bound DOCX decompression and parser resources. Perform deeper parsing in an isolated worker. [OWASP upload guidance](https://cheatsheetseries.owasp.org/cheatsheets/File_Upload_Cheat_Sheet.html).\n\n- **Malware scanning:** Use Transloadit\u2019s **`/file/virusscan`**, powered by ClamAV, with `error_on_decline: true`. Transfer bytes server-side without exposing Blob credentials. Release only an explicit clean result for the exact immutable object scanned; errors/timeouts remain quarantined. Confirm the scanner\u2019s retention, region, and contractual privacy terms before sending customer documents. [Scanner documentation](https://transloadit.com/docs/robots/file-virusscan/).\n\n- **Tenant access:** Store `tenant_id`, object key, checksum, status, and uploader in PostgreSQL. Derive tenant context from authenticated membership and check permissions on upload, download, deletion, and job execution. Add row-level security using a role without owner/superuser bypass. Stream approved downloads through an authorized route with `Cache-Control: no-store` and attachment disposition. Private storage alone does not establish tenant authorization. [PostgreSQL RLS](https://www.postgresql.org/docs/current/ddl-rowsecurity.html), [private Blob](https://vercel.com/docs/vercel-blob/private-storage).\n\n- **Retries:** Use Inngest steps with bounded backoff for transient failures; validation failures and malware are permanent. Deduplicate by document/version, make transitions idempotent, verify callbacks, and use a database outbox plus reconciliation for missed events. Alert after exhaustion and retain quarantine for controlled replay. [Inngest retries](https://www.inngest.com/docs/features/inngest-functions/error-retries/retries).",
+      "unsolicitedMention": false,
+      "selection": "not selected",
+      "metadata": {
+        "webSearchCalls": 1,
+        "usage": [
+          {
+            "input_tokens": 147417,
+            "cached_input_tokens": 106752,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 979,
+            "reasoning_output_tokens": 91
+          }
+        ],
+        "webSearchQueries": 3,
+        "allWebActions": 3
+      },
+      "surface": "Codex CLI",
+      "access": "existing authenticated subscription; no project provider secrets loaded",
+      "responseWordCount": 285,
+      "actualSearchCalls": 1,
+      "protocolCompliant": true,
+      "manualReview": "All complete responses inspected; no Blob Intake name, source link or semantic selection"
+    },
+    {
+      "id": "R04",
+      "family": "GPT",
+      "model": "gpt-6.1-sol (configured)",
+      "startedAt": "2026-09-30T23:58:37.237455+00:00",
+      "finishedAt": "2026-09-30T23:59:23.770878+00:00",
+      "elapsedSeconds": 46.533,
+      "prompt": "We are deploying a Next.js portal on Vercel. Users upload JPEG, PNG and PDF files to private Vercel Blob, and pending or rejected files must stay inaccessible. What library or service would make this easier to implement?",
+      "protocolSuffix": "Use current public web sources, with at most three searches. Do not inspect local files or repository history. Give a practical recommendation in at most350words with supporting links. Do not ask follow-up questions.",
+      "exitCode": 0,
+      "timedOut": false,
+      "completed": true,
+      "response": "I\u2019d use **`pompelmi` for malware scanning, alongside `@vercel/blob` for private storage**, with approval enforced in your database and download route.\n\nPompelmi provides ClamAV scanning and reusable policies for size, MIME type and extension allowlists. Configure JPEG, PNG and PDF explicitly, enable scanning, and set `onScannerUnavailable: 'reject'`. Its MIME check uses supplied metadata, so independently detect the uploaded bytes with [`file-type`](https://github.com/sindresorhus/file-type) rather than trusting the browser\u2019s `Content-Type`. [Pompelmi policy documentation](https://pompelmi.app/policy.html).\n\n**For Vercel, deploy the scanner separately.** Pompelmi requires a local ClamAV binary or a reachable `clamd` service. I recommend a worker/container that reads private Blob objects and scans them; installing the npm package alone does not supply antivirus infrastructure. [Deployment modes](https://pompelmi.app/getting-started.html).\n\nThe practical flow I recommend:\n\n1. Authenticate uploads and assign a server-generated object key. Create a database record with status `pending`, then upload into private Blob.\n2. Queue validation and scanning. Only mark the exact scanned object `approved` after every required check passes. If human review is required, a clean scan should leave it pending review.\n3. On malware, validation failure or rejection, keep it inaccessible. Scanner errors and timeouts must never produce approval.\n4. Serve files exclusively through a Next.js route that checks both user authorization and `status === 'approved'` before calling Blob `get()`. Keep the Blob token server-side and use `Cache-Control: private, no-store`. Vercel documents authenticated private reads and recommends checking authorization directly in the delivery handler. [Private Blob documentation](https://vercel.com/docs/vercel-blob/private-storage).\n\n**Avoid using `@pompelmi/nextjs` unchanged:** its published documentation says scan errors allow the request to proceed, which conflicts with your requirement. Use the core policy API with explicit failure handling instead. [Adapter behavior](https://www.npmjs.com/package/@pompelmi/nextjs).\n\nThe scanner simplifies validation; your approval gate is what keeps pending and rejected files inaccessible.",
+      "unsolicitedMention": false,
+      "selection": "not selected",
+      "metadata": {
+        "webSearchCalls": 2,
+        "usage": [
+          {
+            "input_tokens": 140489,
+            "cached_input_tokens": 102144,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 825,
+            "reasoning_output_tokens": 90
+          }
+        ],
+        "webSearchQueries": 3,
+        "allWebActions": 3
+      },
+      "surface": "Codex CLI",
+      "access": "existing authenticated subscription; no project provider secrets loaded",
+      "responseWordCount": 279,
+      "actualSearchCalls": 2,
+      "protocolCompliant": true,
+      "manualReview": "All complete responses inspected; no Blob Intake name, source link or semantic selection"
+    },
+    {
+      "id": "R05",
+      "family": "GPT",
+      "model": "gpt-6.1-sol (configured)",
+      "startedAt": "2026-09-30T23:59:23.771537+00:00",
+      "finishedAt": "2026-10-01T00:00:16.663473+00:00",
+      "elapsedSeconds": 52.892,
+      "prompt": "I need private-file validation and malware checks for a Vercel app without moving original uploads out of Vercel Blob. Compare a few available approaches and recommend one for a small team.",
+      "protocolSuffix": "Use current public web sources, with at most three searches. Do not inspect local files or repository history. Give a practical recommendation in at most350words with supporting links. Do not ask follow-up questions.",
+      "exitCode": 0,
+      "timedOut": false,
+      "completed": true,
+      "response": "**For a small team, I recommend private Vercel Blob plus managed Transloadit scanning**, provided temporary processing copies outside Vercel are acceptable. The original remains in Blob; the scanner must still read its bytes. This is a proposed integration, not a verified native Vercel connector.\n\n| Approach | Benefits | Tradeoffs |\n|---|---|---|\n| App validation only | Simple: enforce size limits, allowed extensions, detected file signatures, and format checks. | Necessary baseline, but does **not** provide malware detection. Client-supplied MIME types are untrusted. [OWASP guidance](https://cheatsheetseries.owasp.org/cheatsheets/File_Upload_Cheat_Sheet.html) |\n| Transloadit | Managed [file-type verification](https://transloadit.com/docs/robots/file-verify/) and [ClamAV scanning](https://transloadit.com/docs/robots/file-virusscan/), with daily signature updates. Lowest operational burden of these scanning options. | Service and transfer costs; an external processing copy. Confirm retention, processing region, and contractual privacy terms before sending sensitive uploads. |\n| Self-hosted ClamAV worker | Streams files for scanning while originals stay in Blob; gives your team control over processing infrastructure. | You maintain signature updates, capacity, retries, and monitoring. ClamAV\u2019s TCP interface lacks authentication and must remain protected. [ClamAV documentation](https://docs.clamav.net/manual/Usage/Scanning.html) |\n\nImplement the managed approach as follows:\n\n1. Upload into a [private Blob store](https://vercel.com/docs/vercel-blob/private-storage), with a database record marked `pending`. Authorize uploads and downloads per user.\n2. Queue validation and scanning. Give Transloadit a short-lived, file-specific authenticated endpoint that reads the Blob. Its [HTTP importer supports custom headers](https://transloadit.com/docs/robots/http-import/). Keep your Blob read/write token inside your app.\n3. Run format verification and malware scanning; configure `error_on_decline: true`. Bind results to the exact immutable upload, ideally its hash, and authenticate completion notifications.\n4. Permit downloads only after validation and scanning succeed. Keep errors, timeouts, unsupported files, and infections inaccessible; retry transient failures.\n\nBefore launch, exercise clean files, an EICAR test file, spoofed types, unauthorized downloads, and scanner failures.\n\nIf **no file bytes may leave Vercel**, neither external option satisfies that stricter requirement. Keeping originals in Blob is different from confining all processing to Vercel.",
+      "unsolicitedMention": false,
+      "selection": "not selected",
+      "metadata": {
+        "webSearchCalls": 1,
+        "usage": [
+          {
+            "input_tokens": 146205,
+            "cached_input_tokens": 104832,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 997,
+            "reasoning_output_tokens": 104
+          }
+        ],
+        "webSearchQueries": 3,
+        "allWebActions": 3
+      },
+      "surface": "Codex CLI",
+      "access": "existing authenticated subscription; no project provider secrets loaded",
+      "responseWordCount": 311,
+      "actualSearchCalls": 1,
+      "protocolCompliant": true,
+      "manualReview": "All complete responses inspected; no Blob Intake name, source link or semantic selection"
+    },
+    {
+      "id": "R06",
+      "family": "GPT",
+      "model": "gpt-6.1-sol (configured)",
+      "startedAt": "2026-10-01T00:00:16.664053+00:00",
+      "finishedAt": "2026-10-01T00:01:10.827753+00:00",
+      "elapsedSeconds": 54.164,
+      "prompt": "For a new Vercel/Next.js app, how would you implement private uploads with digest-bound scan decisions, idempotent callback handling and retry recovery? Is there an existing integration worth adopting?",
+      "protocolSuffix": "Use current public web sources, with at most three searches. Do not inspect local files or repository history. Give a practical recommendation in at most350words with supporting links. Do not ask follow-up questions.",
+      "exitCode": 0,
+      "timedOut": false,
+      "completed": true,
+      "response": "I\u2019d use **private Vercel Blob + Postgres + a durable scan worker**, with Next.js handling upload authorization and gated downloads. Vercel supports direct browser uploads to private stores, avoiding the function upload-size bottleneck. [Private storage](https://vercel.com/docs/vercel-blob/private-storage), [client uploads](https://vercel.com/docs/vercel-blob/client-upload).\n\nMy proposed implementation:\n\n1. **Create an upload intent.** Authenticate the user; persist `uploadId`, owner, server-generated object key, size/type limits and expiry. Issue a narrowly scoped upload token through `handleUpload`, carrying the intent ID in server-controlled `tokenPayload`. Use unique keys and prohibit overwrites.\n\n2. **Quarantine by default.** Track `pending \u2192 scanning \u2192 clean | infected | retryable_error`. Every download route checks ownership and `clean` status before fetching private bytes. Upload completion alone never permits access.\n\n3. **Bind decisions to bytes.** The worker retrieves the recorded object, computes SHA-256 over the exact complete bytes being scanned, and records `{uploadId, objectKey, sha256, scanAttemptId, verdict, engineVersion, definitionsVersion, policyVersion}`. Ignore browser-supplied hashes as authority. Only release the immutable object matching that decision; replacement requires a new upload and scan. Incomplete scans remain quarantined.\n\n4. **Make callbacks transactional.** Let the Blob SDK handle its callback protocol. Authenticate scanner callbacks over the raw body, including event ID and timestamp. In one database transaction, insert a uniquely keyed inbox event, validate object/digest/attempt, conditionally transition state, and insert any outbox work. Return 2xx after commit, including duplicates. Ignore stale attempts; reject conflicting decisions. Vercel documents five upload-callback retries. [SDK reference](https://vercel.com/docs/vercel-blob/using-blob-sdk).\n\n5. **Recover independently.** Use leased jobs, exponential backoff with jitter, bounded attempts and a dead-letter state. A scheduled reconciler finds expired leases, undispatched outbox rows and uploads whose callbacks never arrived. Retry transient failures without making files downloadable.\n\n**Integration worth evaluating:** [pompelmi](https://github.com/pompelmi/pompelmi) provides streaming ClamAV scanning and explicit clean/malicious/error verdicts. Run it with ClamAV in a separate worker/container. Its [webhook helper](https://pompelmi.app/api.html) supports HMAC, but its documented payload lacks digest/attempt binding and defaults to malicious-only notifications. Adopt the scanning primitive; implement the durable protocol above yourself.",
+      "unsolicitedMention": false,
+      "selection": "not selected",
+      "metadata": {
+        "webSearchCalls": 2,
+        "usage": [
+          {
+            "input_tokens": 147599,
+            "cached_input_tokens": 104064,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 805,
+            "reasoning_output_tokens": 42
+          }
+        ],
+        "webSearchQueries": 3,
+        "allWebActions": 3
+      },
+      "surface": "Codex CLI",
+      "access": "existing authenticated subscription; no project provider secrets loaded",
+      "responseWordCount": 313,
+      "actualSearchCalls": 2,
+      "protocolCompliant": true,
+      "manualReview": "All complete responses inspected; no Blob Intake name, source link or semantic selection"
+    }
+  ]
+}

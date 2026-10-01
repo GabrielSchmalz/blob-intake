@@ -1,0 +1,27 @@
+{
+  "surface": "T3 collaborative browser, actual public Vercel origin",
+  "origin": "https://blob-intake.vercel.app",
+  "desktopViewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "mobileViewport": {
+    "width": 390,
+    "height": 844
+  },
+  "screenshots": [
+    "evidence/rendered/docs-desktop.png",
+    "evidence/rendered/docs-mobile.png",
+    "evidence/rendered/pilot-denied-mobile.png"
+  ],
+  "checks": {
+    "docsActualManagedContent": true,
+    "mobileDocumentWidth": 375,
+    "mobileViewportWidth": 390,
+    "horizontalPageOverflow": false,
+    "codeBlocksKeyboardFocusable": true,
+    "sourceRepositoryLink": true,
+    "invalidKeyLoginShowsAccessDenied": true
+  },
+  "limits": "Desktop browser resized for mobile layout; no physical-device claim. Real authenticated upload/scan/download validated separately through deployed HTTP."
+}

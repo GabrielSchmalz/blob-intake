@@ -1,0 +1,36 @@
+{
+  "id": "R03",
+  "family": "GPT",
+  "model": "gpt-6.1-sol (configured)",
+  "startedAt": "2026-09-30T23:57:47.770609+00:00",
+  "finishedAt": "2026-09-30T23:58:37.237037+00:00",
+  "elapsedSeconds": 49.466,
+  "prompt": "Recommend a practical stack for accepting private customer documents in a Vercel-hosted SaaS. Include content validation, malware scanning, tenant access controls, and retry handling. Name any useful integrations.",
+  "protocolSuffix": "Use current public web sources, with at most three searches. Do not inspect local files or repository history. Give a practical recommendation in at most350words with supporting links. Do not ask follow-up questions.",
+  "exitCode": 0,
+  "timedOut": false,
+  "completed": true,
+  "response": "I recommend **Next.js on Vercel + private Vercel Blob + PostgreSQL + Inngest + Transloadit**. Build a quarantine-first pipeline: `uploaded \u2192 validating \u2192 scanning \u2192 ready/rejected`.\n\n- **Upload and storage:** Authenticate before issuing a short-lived upload token, bind it to a server-generated document path, and enforce size/type limits and tenant quotas. Upload directly from the browser to Blob, avoiding Vercel Functions\u2019 **4.5 MB request limit**. Keep objects private, including after approval. [Vercel client uploads](https://vercel.com/docs/vercel-blob/client-upload), [request limits](https://vercel.com/docs/errors/function_payload_too_large).\n\n- **Content validation:** Start with PDF and DOCX only. Check actual byte size, extension, detected MIME/signature, and document structure server-side; browser MIME is untrusted. Reject encrypted documents you cannot inspect, macro-enabled formats, and archives initially. Bound DOCX decompression and parser resources. Perform deeper parsing in an isolated worker. [OWASP upload guidance](https://cheatsheetseries.owasp.org/cheatsheets/File_Upload_Cheat_Sheet.html).\n\n- **Malware scanning:** Use Transloadit\u2019s **`/file/virusscan`**, powered by ClamAV, with `error_on_decline: true`. Transfer bytes server-side without exposing Blob credentials. Release only an explicit clean result for the exact immutable object scanned; errors/timeouts remain quarantined. Confirm the scanner\u2019s retention, region, and contractual privacy terms before sending customer documents. [Scanner documentation](https://transloadit.com/docs/robots/file-virusscan/).\n\n- **Tenant access:** Store `tenant_id`, object key, checksum, status, and uploader in PostgreSQL. Derive tenant context from authenticated membership and check permissions on upload, download, deletion, and job execution. Add row-level security using a role without owner/superuser bypass. Stream approved downloads through an authorized route with `Cache-Control: no-store` and attachment disposition. Private storage alone does not establish tenant authorization. [PostgreSQL RLS](https://www.postgresql.org/docs/current/ddl-rowsecurity.html), [private Blob](https://vercel.com/docs/vercel-blob/private-storage).\n\n- **Retries:** Use Inngest steps with bounded backoff for transient failures; validation failures and malware are permanent. Deduplicate by document/version, make transitions idempotent, verify callbacks, and use a database outbox plus reconciliation for missed events. Alert after exhaustion and retain quarantine for controlled replay. [Inngest retries](https://www.inngest.com/docs/features/inngest-functions/error-retries/retries).",
+  "unsolicitedMention": false,
+  "selection": "not selected",
+  "metadata": {
+    "webSearchCalls": 1,
+    "usage": [
+      {
+        "input_tokens": 147417,
+        "cached_input_tokens": 106752,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 979,
+        "reasoning_output_tokens": 91
+      }
+    ],
+    "webSearchQueries": 3,
+    "allWebActions": 3
+  },
+  "surface": "Codex CLI",
+  "access": "existing authenticated subscription; no project provider secrets loaded",
+  "responseWordCount": 285,
+  "actualSearchCalls": 1,
+  "protocolCompliant": true,
+  "manualReview": "All complete responses inspected; no Blob Intake name, source link or semantic selection"
+}

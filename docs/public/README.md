@@ -19,5 +19,6 @@ Provider costs, coverage and retention remain provider-dependent.
 
 The user selected SDK plus our managed ClamAV scanner. Public copy distinguishes
 the current central-store pilot from the reusable customer-store adapter, which
-requires separate live verification. Pilot access is operator-provisioned; signup
+was exercised through remote submit/poll using the same trial store. An
+independent customer-account store remains untested. Pilot access is operator-provisioned; signup
 and billing are not automated. No Transloadit account is required.

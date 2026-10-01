@@ -21,8 +21,9 @@ digest/attempt binding, worker authentication and fail-closed delivery. Treat
 worker death, stale leases and signature freshness as operational failure paths,
 not clean scan results. Persist and reconcile queue state in the shared database.
 
-The selected architecture is resolved; successful installation, resource bounds,
-real scanner execution and the deployed approval journey remain unproven until
-W006/W007 evidence exists. ClamAV detects configured known threats; this selection
+The selected architecture is implemented. W006/W007 now contain real managed
+scanner, deployed approval/recovery and automatic-service evidence; see
+[launch results](../../docs/launch-results.md), recorded 2026-10-01. Resource limits
+and one service scan are evidence of the bounded pilot, not sustained capacity. ClamAV detects configured known threats; this selection
 does not guarantee every malicious document is caught. Billing, customer demand
 and a general hosted SaaS business remain separate validation.

@@ -1,6 +1,12 @@
 # W006: Real Blob and hosted scanner trial
 
-State: private Blob provisioned; hosted scanner model selected; real execution pending.
+State: complete real Blob and managed scanner trial. Recorded: 2026-10-01.
+Evidence: [deployed real workflow](../../evidence/managed-live.json),
+[exact-path/expiry](../../evidence/blob-live.json), and
+[automatic worker service](../../evidence/worker-service-live.json).
+Clean approval, real safe-test-specimen rejection, digest mismatch denial,
+missed-callback recovery and exact cleanup pass. See [launch results](../../docs/launch-results.md)
+for cost/resource and detection limitations.
 Depends on: W004 local correctness, D005 execution scope, D008 host boundary.
 
 Vercel account/project and a dedicated private Blob store are available. The user

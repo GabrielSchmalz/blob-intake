@@ -1,7 +1,15 @@
 # W009: Public documentation/example and recommendation trial
 
-State: public-facing source/docs implemented and copyable SDK example passes;
-public deployment/origin verification and recommendation execution pending.
+State: public publication and twelve-response discovery execution complete;
+exploratory negative with protocol deviations. Recorded: 2026-10-01.
+Public docs/example are usable at https://blob-intake.vercel.app/docs with MIT
+source at https://github.com/GabrielSchmalz/blob-intake. Copyable SDK example passes.
+[Scored responses](../../evidence/recommendation-results.json): zero mentions or
+selections in twelve actual model responses. Six GPT sessions satisfy limits;
+all six Claude sessions exceed 350 words and R05 exceeds three searches. Thus
+the balanced preregistered gate remains unestablished, not a valid positive trial.
+See [launch results](../../docs/launch-results.md) for exact model surfaces,
+preflight repair, indexing caveat and excluded commercial work.
 Depends on: D005 publication scope; D006 preregistered discovery protocol.
 Accurate public tested-path claims depend on W006/W007; setup claims depend on W008.
 
